@@ -23,13 +23,13 @@ You will see 23 fasta files in total, each containing a set of proteins from a d
 
 ## Inferring ortholog groups
 
-The first step is to identify orthologs among all the proteins. We will use [OrthoFinder] (https://github.com/davidemms/OrthoFinder) for this task, which is simple to run. Just provide the folder containing the proteome files:
+The first step is to identify orthologs among all the proteins. We will use [OrthoFinder](https://github.com/davidemms/OrthoFinder) for this task, which is simple to run. Just provide the folder containing the proteome files:
 
 ```
 orthofinder -f vertebrate_proteomes
 ```
 
-The list of single-copy orthologs will be in a file called Orthogroups.csv. If you look into this file, you will see that it is a list of seqeunce names, grouped by orthogroups. The next step is to create fasta files that will contain orthologous sequences for every species. This can be automated with [mirlo] (https://github.com/mthon/mirlo), which requires [JDK] (https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+The list of single-copy orthologs will be in a file called Orthogroups.csv. If you look into this file, you will see that it is a list of seqeunce names, grouped by orthogroups. The next step is to create fasta files that will contain orthologous sequences for every species. This can be automated with [mirlo](https://github.com/mthon/mirlo), which requires [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
 ```
 mirlo.py -c Results_Feb28/Orthogroups.csv -i vertebrate_proteomes -o MIRLO_OUT
@@ -65,14 +65,14 @@ Let's make taxon names homogeneous across ortholog groups; this is necessary for
 for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
 ```
 
-**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! [Research has shown] (https://www.nature.com/articles/s41559-017-0126) that including paralogs into a phylogenomic dataset can bias the results, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference, but identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
+**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! [Research has shown](https://www.nature.com/articles/s41559-017-0126) that including paralogs into a phylogenomic dataset can bias the results, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference, but identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
 
 
 ## Pre-alignment quality filtering
 
 Often, transcriptomes and genomes have stretches of erroneous, non-homologous amino acids or nucleotides, produced by sequencing errors, assembly errors, or errors in genome annotation. But until recently, these type of errors had been mostly ignored because [no automatic tool could deal with them](https://natureecoevocommunity.nature.com/users/54859-iker-irisarri/posts/37479-automated-removal-of-non-homologous-sequence-stretches-in-phylogenomic-datasets).
 
-We will use [PREQUAL] (https://doi.org/10.1093/bioinformatics/bty448), a new software takes sets of (homologous) unaligned sequences and identifies sequence stretches sharing no evidence of homology, which are then masked in the output. Note that homology can be invoked at the level of sequences as well as of residues (amino acids or nucleotides). Running PREQUAL for each set orthogroup is  easy:
+We will use [PREQUAL](https://doi.org/10.1093/bioinformatics/bty448), a new software takes sets of (homologous) unaligned sequences and identifies sequence stretches sharing no evidence of homology, which are then masked in the output. Note that homology can be invoked at the level of sequences as well as of residues (amino acids or nucleotides). Running PREQUAL for each set orthogroup is  easy:
 
 ```
 for f in *fas; do prequal $f ; done
@@ -109,7 +109,7 @@ Alternatively, the default settings in BMGE will remove incomplete positions and
 for f in *mafft; do java -jar /Applications/Phylogeny/BMGE-1.12/BMGE.jar -i $f -t AA -of $f.bmge; done
 ```
 
-While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView] (link) or [AliView] (link). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignemnts in phylip format, which can be easily generated with a simple script:
+While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignemnts in phylip format, which can be easily generated with a simple script:
 
 ```
 for f in *fa; do fasta2phylip.pl $f > $f.phy; done
@@ -117,7 +117,7 @@ for f in *fa; do fasta2phylip.pl $f > $f.phy; done
 
 ## Concatenate alignment
 
-To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](link), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in a random order). A faster solution is to use our own script. This script will read the files given in STDIN and will output (1) a concatenated alignment to STDOUT and (2) a  file called `partitionfile.part`.
+To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in a random order). A faster solution is to use our own script. This script will read the files given in STDIN and will output (1) a concatenated alignment to STDOUT and (2) a  file called `partitionfile.part`.
 
 ```
 perl concat_fasta_partitions.pl *filtered.mafft.gt02 > vert_56g_filtered_g02.fa
@@ -131,7 +131,7 @@ Yeah!! Our concatenated dataset is ready to rock!!
 
 One of the most common approaches in phylogenomics is to build gene concatenation: the signal from multiple genes is "pooled" together with the aim of increasing resolution power. This method is best when among-gene discordance is low.
 
-We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood (ML) analysis. Another great alternative is [RAxML] (link). The most simple analysis is to treat the concatenated dataset as s single homogeneous entity. We need to provide the number of threads to use (`-nt 4`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000`):
+We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood (ML) analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as s single homogeneous entity. We need to provide the number of threads to use (`-nt 4`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000`):
 
 ```
 iqtree -s vert_56g_filtered_g02.fa -m TEST -merit BIC -bb 1000 -alrt 1000 -nt 4
@@ -176,7 +176,7 @@ Congratulations!! You just got your coalescent species tree!! How is it differen
 
 ## Tree visualization
 
-Trees are just text files representing relationships with parentheses; did you see that already? But it is more practical to plot them as a graph, for which we can use tools such as [iTOL] (https://itol.embl.de) or [FigTree] (https://github.com/rambaut/figtree/releases).
+Trees are just text files representing relationships with parentheses; did you see that already? But it is more practical to plot them as a graph, for which we can use tools such as [iTOL](https://itol.embl.de) or [FigTree](https://github.com/rambaut/figtree/releases).
 
 Upload your trees to iTOL. Trees need to be rooted with an outgroup. Click in the branch of *Callorhinchus milii* and the select "Tree Structure/Reroot the tree here". Branch support values can be shown under the "Advanced" menu. The tree can be modified in many other ways, and finally, a graphical tree can be expoerted. Similar options are available in FigTree.
 
