@@ -6,7 +6,8 @@ You will learn the most fundamental steps in the phylogenomics pipeline, allowin
 
 The phylogenomics pipeline can become very complex, adding many steps (particularly when assembling the datasets!) and some analyses can take weeks to complete. Pipelines are modular, meaning they can (and should) be improved, as well as modified to the particular question at hand.
 
-## Objective and dataset
+
+## Objective and data
 
 We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/65/6/1057/2281640). The starting point are a subset of proteins obtained from genomes/transcriptomes from 23 species of vertebrates and our aim is to reconstruct the phylogeny of these species using concatenated and coalescent approaches. In practice, we are using a subset of the full genomes/transcriptomes of these species, only to speed up computations.
 
@@ -18,6 +19,7 @@ tar zxvf vertebrate_proteomes.tar.gz
 ```
 
 You will see 23 fasta files in total, each containing a set of proteins from a different species.
+
 
 ## Inferring ortholog groups
 
@@ -36,22 +38,22 @@ mirlo.py -c Results_Feb28/Orthogroups.csv -i vertebrate_proteomes -o MIRLO_OUT
 Alternatively, one could have a bit of fun and try to parse OrthoFinder's output with a bit of bash. Look at Orthogroups.csv: it is a simple tab-separated file! What do you need to do? Tip: for each orthogroup, get the sequence names (fasta headers) and place them into individual files, one per line. Then use these files to extract the sequences from the original proteomes using [seqtk](https://github.com/lh3/seqtk) or a perl oneliner.
 
 ```
-\# each line contains the sequences belonging to one orthogroup
+# each line contains the sequences belonging to one orthogroup
 split -l 1 Orthofinder_Results_Feb28/Orthogroups.csv
 
-\# except for the first line, which contains the column headers and can be ignored
+# except for the first line, which contains the column headers and can be ignored
 rm xaa 
 
-\# you can create files .taxa containing the sequences for each orthgroup
+# you can create files .taxa containing the sequences for each orthgroup
 for f in x*; do name=`cat $f | cut -f1` ; tr '\t' '\n' < $f | tail -n+2 > $name.taxa; done 
 
-\# create a file containing all proteins from all species
+# create a file containing all proteins from all species
 cat vertebrate_proteomes/\*.faa > vertebrate_proteomes_all.fasta
 
-\# for each orthogroup, extract the sequences from the big fasta file using seqtk
+# for each orthogroup, extract the sequences from the big fasta file using seqtk
 for f in OG00000\*.taxa; do /Applications/Phylogeny/seqtk/seqtk subseq vertebrate_proteomes.fasta $f > $f.fas; done
 
-\# aternatively, use a perl oneliner
+# aternatively, use a perl oneliner
 for f in OG00000\*taxa; do perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' $f vertebrate_proteomes.fasta; done
 ```
 
@@ -61,10 +63,10 @@ Let's make taxon names homogeneous across ortholog groups; this is necessary for
 
 ```
 for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
-
 ```
 
-**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! [Research has shown] (link) that including paralogs into a phylogenomic dataset can bias the results, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference, but identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
+**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! [Research has shown] (https://www.nature.com/articles/s41559-017-0126) that including paralogs into a phylogenomic dataset can bias the results, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference, but identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
+
 
 ## Pre-alignment quality filtering
 
@@ -77,6 +79,7 @@ for f in *fas; do prequal $f ; done
 ```
 
 The filtered (masked) alignments are in .filtered whereas .prequal contains relevant information such as the number of residues filtered.
+
 
 ## Multiple sequence alignment
 
@@ -123,36 +126,58 @@ mv partitionfile.part vert_56g_filtered_g02.part
 
 Yeah!! Our concatenated dataset is ready to rock!!
 
+
 ## Concatenation: Maximum likelihood
 
 One of the most common approaches in phylogenomics is to build gene concatenation: the signal from multiple genes is "pooled" together with the aim of increasing resolution power. This method is best when among-gene discordance is low.
 
-We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software. Another great alternative is [RAxML] (link). The most simple analysis is to treat the concatenated dataset as s single homogeneous entity. We need to provide the number of threads to use (`-nt 4`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000`):
+We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood (ML) analysis. Another great alternative is [RAxML] (link). The most simple analysis is to treat the concatenated dataset as s single homogeneous entity. We need to provide the number of threads to use (`-nt 4`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000`):
 
 ```
-iqtree -s vert_56g_filtered_g02.fa -spp vert_56g_filtered_g02.part -m TEST -merit BIC -bb 1000 -alrt 1000 -nt 4
+iqtree -s vert_56g_filtered_g02.fa -m TEST -merit BIC -bb 1000 -alrt 1000 -nt 4
 ```
 
-A more sophisticated approach would be to perform a partitioned maximum likelihood analysis, where different genes (or other kinds of data divisions) are allowed to evolve under different evolutionary models. This should provide a better fit to the data and will increase the number of parameters. By providing the gene partitions or coordinates (`-spp`) IQTREE will select the best-fit models for each partition, in this case will will use the AICc criterion more suitable for shorter alignments.
+A more sophisticated approach would be to perform a partitioned maximum likelihood analysis, where different genes (or other data partitions) are allowed to have different evolutionary models. This should provide a better fit to the data but will increase the number of parameters too. To lauch this analysis we need to provide a file containing the coordinates of the partitions (`-spp`) and we can ask IQTREE to select the best-fit models for each partition, in this case according to AICc that is more suitable for shorter alignments.
 
-
-the model (`-m`), number of CPUs to use (`-nt`), and additional parameters. In this case, we will select again best-fit models according to the corrected Akaike Information Criterion (`-m TEST -merit AICc`).
-
-
-One approach is to treat our concatenated dataset as a single homogeneous entity. In this case, 
-
-The arguments we need to pro
-
-
-
-
- Compared to MrBayes, IQTREE allows us to use more models and this is preferable as it can improve model fit. In addition to the maximum likelihood tree, we will assess branch support using 1000 pseudoreplicates of ultrafast bootstrapping (`-bb 1000`). 
 ```
-iqtree -s FcC_supermatrix.fas -spp FcC_supermatrix_partition.txt -m TEST -merit AICc -bb 1000 -nt 1
+iqtree -s vert_56g_filtered_g02.fa -spp vert_56g_filtered_g02.part -m TEST -merit AICc -bb 1000 -alrt 1000 -nt 4
+
 ```
 
-Congratulations! If everything went well, here you have the [maximum likelihood estimation of your phylogeny](https://www.youtube.com/watch?v=1FkhCQl2hRs&t=76s) (.treefile)! This can be visualized with FigTree. The numbers at branches (label) are ultrafast bootstrap proportions, which analogously to Bayesian posterior probabilites, inform us about the reliability of that branch. Values >70% can be trusted as robust.
+Congratulations!! If everything went well, you should get your maximum likelihood estimation of the vertebrate phylogeny (.treefile)! See below how to see a graphical representation of your tree.
 
 
+## Coalescence analyses
+
+An alterantive to concatenation is to use a multispecies coalescent approach. Unlike maximum likelihood, coalescent methods account for incomplete lineage sorting (ILS; an expected outcome of evolving populations). These methods are particularly useful we we expect high levels of ILS, e.g. when speciation events are rapid and leave little time for allele coalescence.
+
+We will use [ASTRAL](https://github.com/smirarab/ASTRAL), a widely used tool that scales up well to phylogenomic datasets. It takes a set of gene trees as input and will generate the coalescent "species tree". ASTRAL assumes that gene trees are estimated without error.
+
+Before running ASTRAL, we will need to estimate individual gene trees. This can be easily done with a loop calling IQTREE:
+
+```
+for f in *filtered.mafft.gt02; do iqtree -s $f -m TEST -merit AICc -nt 1; done
+```
+
+After all gene trees are inferred, we should put them all into a single file:
+
+```
+cat *filtered.mafft.gt02.treefile > my_gene_trees.tre
+```
+
+Now running ASTRAL is trivial, providing the input file with the gene trees and the desired output file name:
+
+```
+java -jar astral.5.6.3.jar -i my_gene_trees.tre -o species_tree_ASTRAL.tre 2> out.log
+```
+
+Congratulations!! You just got your coalescent species tree!! How is it different from the concatenated ML tree? 
 
 
+## Tree visualization
+
+Trees are just text files representing relationships with parentheses; did you see that already? But it is more practical to plot them as a graph, for which we can use tools such as [iTOL] (https://itol.embl.de) or [FigTree] (https://github.com/rambaut/figtree/releases).
+
+Upload your trees to iTOL. Trees need to be rooted with an outgroup. Click in the branch of *Callorhinchus milii* and the select "Tree Structure/Reroot the tree here". Branch support values can be shown under the "Advanced" menu. The tree can be modified in many other ways, and finally, a graphical tree can be expoerted. Similar options are available in FigTree.
+
+[Well done!](https://media.giphy.com/media/wux5AMYo8zHgc/giphy.gif).
