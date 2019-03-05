@@ -1,18 +1,16 @@
 # PEB_Phylogenomics
-Phylogenomics crash-course
+
 This hands-on course will introduce you to the awesomeness of phylogenomics.
 
-You will learn the most fundamental steps in the phylogenomics pipeline, allowing you to go from raw genome/ transcriptome data of a few taxa to the phylogenetic tree showing you how their evolutionary relationships. 
+You will learn the most fundamental steps in the phylogenomics pipeline, allowing you to go from a bunch of sequences to a phylogenetic tree that represent how the species are related to each other. 
 
-The phylogenomics pipeline can become very complex, adding many steps (particularly when assembling the datasets!) and complex analyses can take weeks to complete. The fun multiplies! Pipelines are also modular, which means they can (should) be improved and accommodated to the particular question at hand.
+The phylogenomics pipeline can become very complex, adding many steps (particularly when assembling the datasets!) and some analyses can take weeks to complete. Pipelines are modular, meaning they can (and should) be improved, as well as modified to the particular question at hand.
 
-## A phylogenomics pipeline
+## Objective and dataset
 
-The data we will use are from a real phylogenomic dataset of vertebrates, in particular a subset of the ~2000-gene set of [my first phylogenomics paper](http://XX/). The advantage of using a subset of the data is to reduce waiting times, otherwise the pipeline is the same as for a real project.
+We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/65/6/1057/2281640). The starting point are a subset of proteins obtained from genomes/transcriptomes from 23 species of vertebrates and our aim is to reconstruct the phylogeny of these species using concatenated and coalescent approaches. In practice, we are using a subset of the full genomes/transcriptomes of these species, only to speed up computations.
 
-## Obtaining the data
-
-Let's start by downloading the data. They are (subsets of) proteins from genomes/ transcriptomes of 23 vertebrate species.
+Let's start by downloading the data.
 
 Connect to [our server](https://datasciencehub.ifca.es/). Download the dataset from [this respository](https://github.com/iirisarri/UIMP-phylo_pipeline/conidae_mito_nuclear.zip) and decompress it into your preferred location.
 ```
