@@ -111,13 +111,13 @@ To trim alignment positions we can use [BMGE](https://bmcevolbiol.biomedcentral.
 To remove alignment positions with > 20% gaps:
 
 ```
-for f in *mafft; do java -jar /Applications/Phylogeny/BMGE-1.12/BMGE.jar -i $f -t AA -g 0.2 -h 1 -w 1 -of $f.gt02; done
+for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.2 -h 1 -w 1 -of $f.gt02; done
 ```
 
 Alternatively, the default settings in BMGE will remove incomplete positions and additionally trim high-entropy (likely fast-evolving) positions:
 
 ```
-for f in *mafft; do java -jar /Applications/Phylogeny/BMGE-1.12/BMGE.jar -i $f -t AA -of $f.bmge; done
+for f in *mafft; do java -jar BMGE.jar -i $f -t AA -of $f.bmge; done
 ```
 
 While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignemnts in phylip format, which can be easily generated with a simple script:
