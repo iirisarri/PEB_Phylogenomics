@@ -58,7 +58,6 @@ cat vertebrate_proteomes/\*.faa > vertebrate_proteomes_all.fasta
 for f in OG00000\*.taxa; do /Applications/Phylogeny/seqtk/seqtk subseq vertebrate_proteomes.fasta $f > $f.fas; done
 
 \# aternatively, use a perl oneliner
-for f in OG00000\*taxa; do perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' $f vertebrate_proteomes.fasta; done
 ```
 </p>
 </details>
