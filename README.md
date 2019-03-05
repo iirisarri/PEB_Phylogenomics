@@ -17,9 +17,9 @@ Let's start by downloading the data from [this respository](https://github.com/i
 ```
 wget https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz
 tar zxvf vertebrate_proteomes.tar.gz
-```
 </p>
 </details>
+```
 
 You will see 23 fasta files in total, each containing a set of proteins from a different species.
 
@@ -58,9 +58,10 @@ cat vertebrate_proteomes/\*.faa > vertebrate_proteomes_all.fasta
 for f in OG00000\*.taxa; do /Applications/Phylogeny/seqtk/seqtk subseq vertebrate_proteomes.fasta $f > $f.fas; done
 
 \# aternatively, use a perl oneliner
-```
+for f in OG00000\*taxa; do perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' $f vertebrate_proteomes.fasta; done
 </p>
 </details>
+```
 
 At this point, we will have one file per gene, containing one ortholog per species.
 
