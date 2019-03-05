@@ -12,7 +12,7 @@ The phylogenomics pipeline can become very complex, adding many steps (particula
 ## Objective and data
 
 
-We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/65/6/1057/2281640). The starting point are a subset of proteins obtained from genomes/transcriptomes from 23 species of vertebrates and our aim is to reconstruct the phylogeny of these species using concatenated and coalescent approaches. In practice, we are using a subset of the full genomes/transcriptomes of these species, only to speed up computations.
+We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/65/6/1057/2281640). The starting point is a subset of proteins obtained from genomes/transcriptomes of 23 species of vertebrates and our aim is to reconstruct the phylogeny of these species using concatenated and coalescent approaches. In practice, we are using a subset of the full genomes/transcriptomes of these species, only to speed up computations.
 
 Let's start by downloading the data from [this respository](https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz) and decompress it into your preferred location. 
 
@@ -34,7 +34,7 @@ The first step is to identify orthologs among all the proteins. We will use [Ort
 orthofinder -f vertebrate_proteomes
 ```
 
-The list of single-copy orthologs will be in a file called Orthogroups.csv. If you look into this file, you will see that it is a list of seqeunce names, grouped by orthogroups. The next step is to create fasta files that will contain orthologous sequences for every species. This can be automated with [mirlo](https://github.com/mthon/mirlo), which requires [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+The list of single-copy orthologs will be in a file called Orthogroups.csv. If you look into this file, you will see that it is a list of sequence names, grouped by orthogroups. The next step is to create fasta files that will contain orthologous sequences for every species. This can be automated with [mirlo](https://github.com/mthon/mirlo), which requires [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
 ```
 mirlo.py -c Results_Feb28/Orthogroups.csv -i vertebrate_proteomes -o MIRLO_OUT
@@ -104,7 +104,7 @@ for f in *filtered; do mafft $f > $f.mafft; done
 ## Alignment trimming
 
 
-Some gene regions (e.g., fast-evolving) are difficult to align and thus positional homology is unceratin. It is unclear (probably problem-specific) whether trimming badly-aligned regions [improves](https://academic.oup.com/sysbio/article/56/4/564/1682121) or [worsens](https://academic.oup.com/sysbio/article/64/5/778/1685763) tree inferece. However, gently trimming very incomplete positions (e.g. with >80% gaps) will speeds up computation in the next steps without significant information loss.
+Some gene regions (e.g., fast-evolving) are difficult to align and thus positional homology is uncertain. It is unclear (probably problem-specific) whether trimming badly-aligned regions [improves](https://academic.oup.com/sysbio/article/56/4/564/1682121) or [worsens](https://academic.oup.com/sysbio/article/64/5/778/1685763) tree inferece. However, gently trimming very incomplete positions (e.g. with >80% gaps) will speeds up computation in the next steps without significant information loss.
 
 To trim alignment positions we can use [BMGE](https://bmcevolbiol.biomedcentral.com/articles/10.1186/1471-2148-10-210) but several other software are also available.
 
@@ -120,7 +120,7 @@ Alternatively, the default settings in BMGE will remove incomplete positions and
 for f in *mafft; do java -jar BMGE.jar -i $f -t AA -of $f.bmge; done
 ```
 
-While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignemnts in phylip format, which can be easily generated with a simple script:
+While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignments in phylip format, which can be easily generated with a simple script:
 
 ```
 for f in *fa; do fasta2phylip.pl $f > $f.phy; done
@@ -165,7 +165,7 @@ Congratulations!! If everything went well, you should get your maximum likelihoo
 ## Coalescence analysis
 
 
-An alterantive to concatenation is to use a multispecies coalescent approach. Unlike maximum likelihood, coalescent methods account for incomplete lineage sorting (ILS; an expected outcome of evolving populations). These methods are particularly useful we we expect high levels of ILS, e.g. when speciation events are rapid and leave little time for allele coalescence.
+An alternative to concatenation is to use a multispecies coalescent approach. Unlike maximum likelihood, coalescent methods account for incomplete lineage sorting (ILS; an expected outcome of evolving populations). These methods are particularly useful we expect high levels of ILS, e.g. when speciation events are rapid and leave little time for allele coalescence.
 
 We will use [ASTRAL](https://github.com/smirarab/ASTRAL), a widely used tool that scales up well to phylogenomic datasets. It takes a set of gene trees as input and will generate the coalescent "species tree". ASTRAL assumes that gene trees are estimated without error.
 
@@ -196,7 +196,7 @@ Congratulations!! You just got your coalescent species tree!! How is it differen
 
 Trees are just text files representing relationships with parentheses; did you see that already? But it is more practical to plot them as a graph, for which we can use tools such as [iTOL](https://itol.embl.de) or [FigTree](https://github.com/rambaut/figtree/releases).
 
-Upload your trees to iTOL. Trees need to be rooted with an outgroup. Click in the branch of *Callorhinchus milii* and the select "Tree Structure/Reroot the tree here". Branch support values can be shown under the "Advanced" menu. The tree can be modified in many other ways, and finally, a graphical tree can be expoerted. Similar options are available in FigTree.
+Upload your trees to iTOL. Trees need to be rooted with an outgroup. Click in the branch of *Callorhinchus milii* and the select "Tree Structure/Reroot the tree here". Branch support values can be shown under the "Advanced" menu. The tree can be modified in many other ways, and finally, a graphical tree can be exported. Similar options are available in FigTree.
 
 [Well done!](https://media.giphy.com/media/wux5AMYo8zHgc/giphy.gif)
 
