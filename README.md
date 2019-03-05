@@ -39,19 +39,24 @@ mirlo.py -c Results_Feb28/Orthogroups.csv -i vertebrate_proteomes -o MIRLO_OUT
 
 ```
 
-But if you look into Orthogroups.csv, you will see it is a simple tab-separated file. Thus, we can also parse it with a bit of bash and extract the sequences using [seqtk]() or perl.
+But if you look into Orthogroups.csv, you will see it is a simple tab-separated file. Thus, we can also parse it with a bit of bash. Tip: separate sequences for each orthogroup and place them into a individual files, one ID per line: then extract the sequences for each orthogroup using [seqtk](https://github.com/lh3/seqtk) or a [perl script](link).
 
 ```
 # each line contains the sequences belonging to one orthogroup
 split -l 1 Orthofinder_Results_Feb28/Orthogroups.csv
+
 # except the first line, which contains the column headers and can be ignored
 rm xaa 
+
 # you can create files .taxa containing the sequences for each orthgroup
 for f in x*; do name=`cat $f | cut -f1` ; tr '\t' '\n' < $f | tail -n+2 > $name.taxa; done 
+
 # create a file containing all proteins from all species
 cat vertebrate_proteomes/*faa > vertebrate_proteomes_all.fasta
+
 # for each orthogroup, extract the sequences from the big fasta file using seqtk
 for f in OG00000*taxa; do /Applications/Phylogeny/seqtk/seqtk subseq vertebrate_proteomes.fasta $f > $f.fas; done
+
 # aternatively, use a perl oneliner
 for f in OG00000*taxa; do perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' $f vertebrate_proteomes.fasta; done
 
@@ -72,7 +77,7 @@ for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
 
 Often, transcriptomes and genomes have stretches of erroneous, non-homologous amino acids or nucleotides, produced by sequencing errors, assembly errors, or errors in genome annotation. 
 
-Until recently, these errors had been mostly ignored because [no automatic tool could deal with them](link to blog). We will use [PREQUAL] (pubmed link), which takes sets of unaligned sequences and identifies sequence stretches sharing no evidence of homology, which are masked in the output.
+Until recently, these errors had been mostly ignored because [no automatic tool could deal with them](https://natureecoevocommunity.nature.com/users/54859-iker-irisarri/posts/37479-automated-removal-of-non-homologous-sequence-stretches-in-phylogenomic-datasets). We will use [PREQUAL] (https://doi.org/10.1093/bioinformatics/bty448), which takes sets of unaligned sequences and identifies sequence stretches sharing no evidence of homology, which are masked in the output.
 
 ```
 for f in *fas; do /Applications/Phylogeny/prequal/prequal $f ; done
