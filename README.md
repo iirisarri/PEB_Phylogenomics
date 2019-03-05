@@ -1,5 +1,6 @@
 # PEB_Phylogenomics
 
+
 This hands-on course will introduce you to the awesomeness of phylogenomics.
 
 You will learn the most fundamental steps in the phylogenomics pipeline, allowing you to go from a bunch of sequences to a phylogenetic tree that represent how the species are related to each other. 
@@ -7,7 +8,9 @@ You will learn the most fundamental steps in the phylogenomics pipeline, allowin
 The phylogenomics pipeline can become very complex, adding many steps (particularly when assembling the datasets!) and some analyses can take weeks to complete. Pipelines are modular, meaning they can (and should) be improved, as well as modified to the particular question at hand.
 
 
+
 ## Objective and data
+
 
 We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/65/6/1057/2281640). The starting point are a subset of proteins obtained from genomes/transcriptomes from 23 species of vertebrates and our aim is to reconstruct the phylogeny of these species using concatenated and coalescent approaches. In practice, we are using a subset of the full genomes/transcriptomes of these species, only to speed up computations.
 
@@ -21,7 +24,9 @@ tar zxvf vertebrate_proteomes.tar.gz
 You will see 23 fasta files in total, each containing a set of proteins from a different species.
 
 
+
 ## Inferring ortholog groups
+
 
 The first step is to identify orthologs among all the proteins. We will use [OrthoFinder](https://github.com/davidemms/OrthoFinder) for this task, which is simple to run. Just provide the folder containing the proteome files:
 
@@ -68,7 +73,9 @@ for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
 **NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! [Research has shown](https://www.nature.com/articles/s41559-017-0126) that including paralogs into a phylogenomic dataset can bias the results, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference, but identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
 
 
+
 ## Pre-alignment quality filtering
+
 
 Often, transcriptomes and genomes have stretches of erroneous, non-homologous amino acids or nucleotides, produced by sequencing errors, assembly errors, or errors in genome annotation. But until recently, these type of errors had been mostly ignored because [no automatic tool could deal with them](https://natureecoevocommunity.nature.com/users/54859-iker-irisarri/posts/37479-automated-removal-of-non-homologous-sequence-stretches-in-phylogenomic-datasets).
 
@@ -81,7 +88,9 @@ for f in *fas; do prequal $f ; done
 The filtered (masked) alignments are in .filtered whereas .prequal contains relevant information such as the number of residues filtered.
 
 
+
 ## Multiple sequence alignment
+
 
 The next step is to infer multiple sequence alignments. Multiple sequence alignments allow us to *know* which amino acids/ nucleotides are homologous. A simple yet accurate tool is [MAFFT](https://mafft.cbrc.jp/alignment/server/).
 
@@ -91,7 +100,9 @@ We will align gene files separately using a for loop:
 for f in *filtered; do mafft $f > $f.mafft; done
 ```
 
+
 ## Alignment trimming
+
 
 Some gene regions (e.g., fast-evolving) are difficult to align and thus positional homology is unceratin. It is unclear (probably problem-specific) whether trimming badly-aligned regions [improves](https://academic.oup.com/sysbio/article/56/4/564/1682121) or [worsens](https://academic.oup.com/sysbio/article/64/5/778/1685763) tree inferece. However, gently trimming very incomplete positions (e.g. with >80% gaps) will speeds up computation in the next steps without significant information loss.
 
@@ -115,7 +126,9 @@ While diving into phylogenomic pipelines, it is always advisable to check a few 
 for f in *fa; do fasta2phylip.pl $f > $f.phy; done
 ```
 
+
 ## Concatenate alignment
+
 
 To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in a random order). A faster solution is to use our own script. This script will read the files given in STDIN and will output (1) a concatenated alignment to STDOUT and (2) a  file called `partitionfile.part`.
 
@@ -127,7 +140,9 @@ mv partitionfile.part vert_56g_filtered_g02.part
 Yeah!! Our concatenated dataset is ready to rock!!
 
 
+
 ## Concatenation: Maximum likelihood
+
 
 One of the most common approaches in phylogenomics is to build gene concatenation: the signal from multiple genes is "pooled" together with the aim of increasing resolution power. This method is best when among-gene discordance is low.
 
@@ -141,13 +156,14 @@ A more sophisticated approach would be to perform a partitioned maximum likeliho
 
 ```
 iqtree -s vert_56g_filtered_g02.fa -spp vert_56g_filtered_g02.part -m TEST -merit AICc -bb 1000 -alrt 1000 -nt 4
-
 ```
 
 Congratulations!! If everything went well, you should get your maximum likelihood estimation of the vertebrate phylogeny (.treefile)! See below how to see a graphical representation of your tree.
 
 
-## Coalescence analyses
+
+## Coalescence analysis
+
 
 An alterantive to concatenation is to use a multispecies coalescent approach. Unlike maximum likelihood, coalescent methods account for incomplete lineage sorting (ILS; an expected outcome of evolving populations). These methods are particularly useful we we expect high levels of ILS, e.g. when speciation events are rapid and leave little time for allele coalescence.
 
@@ -174,10 +190,13 @@ java -jar astral.5.6.3.jar -i my_gene_trees.tre -o species_tree_ASTRAL.tre 2> ou
 Congratulations!! You just got your coalescent species tree!! How is it different from the concatenated ML tree? 
 
 
+
 ## Tree visualization
+
 
 Trees are just text files representing relationships with parentheses; did you see that already? But it is more practical to plot them as a graph, for which we can use tools such as [iTOL](https://itol.embl.de) or [FigTree](https://github.com/rambaut/figtree/releases).
 
 Upload your trees to iTOL. Trees need to be rooted with an outgroup. Click in the branch of *Callorhinchus milii* and the select "Tree Structure/Reroot the tree here". Branch support values can be shown under the "Advanced" menu. The tree can be modified in many other ways, and finally, a graphical tree can be expoerted. Similar options are available in FigTree.
 
-[Well done!](https://media.giphy.com/media/wux5AMYo8zHgc/giphy.gif).
+[Well done!](https://media.giphy.com/media/wux5AMYo8zHgc/giphy.gif)
+
