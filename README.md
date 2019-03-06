@@ -16,14 +16,11 @@ We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/
 
 Let's start by downloading the data from [this respository](https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz) and decompress it into your preferred location. 
 
-<details open>
-<summary>Need a refreshment?</summary>
-<br>
+
 ```
 wget https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz
 tar zxvf vertebrate_proteomes.tar.gz
 ```
-<details>
 
 
 You will see 23 fasta files in total, each containing a set of proteins from a different species.
