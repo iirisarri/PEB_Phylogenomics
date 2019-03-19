@@ -16,11 +16,14 @@ We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/
 
 Let's start by downloading the data from [this respository](https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz) and decompress it into your preferred location. 
 
-
-```
+<details>
+  <summary>Need help?</summary>
+  
+```bash
 wget https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz
 tar zxvf vertebrate_proteomes.tar.gz
 ```
+</details>
 
 
 You will see 23 fasta files in total, each containing a set of proteins from a different species.
@@ -32,19 +35,22 @@ You will see 23 fasta files in total, each containing a set of proteins from a d
 
 The first step is to identify orthologs among all the proteins. We will use [OrthoFinder](https://github.com/davidemms/OrthoFinder) for this task, which is simple to run. Just provide the folder containing the proteome files:
 
-```
+```bash
 orthofinder -f vertebrate_proteomes
 ```
 
 The list of single-copy orthologs will be in a file called Orthogroups.csv. If you look into this file, you will see that it is a list of sequence names, grouped by orthogroups. The next step is to create fasta files that will contain orthologous sequences for every species. This can be automated with [mirlo](https://github.com/mthon/mirlo), which requires [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 
-```
+```bash
 mirlo.py -c Results_Feb28/Orthogroups.csv -i vertebrate_proteomes -o MIRLO_OUT
 ```
 
 Alternatively, one could have a bit of fun and try to parse OrthoFinder's output with a bit of bash. Look at Orthogroups.csv: it is a simple tab-separated file! What do you need to do? Tip: for each orthogroup, get the sequence names (fasta headers) and place them into individual files, one per line. Then use these files to extract the sequences from the original proteomes using [seqtk](https://github.com/lh3/seqtk) or a perl oneliner.
 
-```
+<details>
+  <summary>Need help?</summary>
+  
+```bash
 # each line contains the sequences belonging to one orthogroup
 split -l 1 Orthofinder_Results_Feb28/Orthogroups.csv
 
@@ -63,12 +69,13 @@ for f in OG00000\*.taxa; do /Applications/Phylogeny/seqtk/seqtk subseq vertebrat
 # aternatively, use a perl oneliner
 for f in OG00000\*taxa; do perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' $f vertebrate_proteomes.fasta; done
 ```
+</details>
 
 As a result, we will have one file per orthogroup ("gene"), containing one sequence per species.
 
 Let's make taxon names homogeneous across ortholog groups; this is necessary for the concatenation step. You will see that the difference between headers is just a gene number, which we must remove.
 
-```
+```bash
 for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
 ```
 
@@ -83,7 +90,7 @@ Often, transcriptomes and genomes have stretches of erroneous, non-homologous am
 
 We will use [PREQUAL](https://doi.org/10.1093/bioinformatics/bty448), a new software takes sets of (homologous) unaligned sequences and identifies sequence stretches sharing no evidence of homology, which are then masked in the output. Note that homology can be invoked at the level of sequences as well as of residues (amino acids or nucleotides). Running PREQUAL for each set orthogroup is  easy:
 
-```
+```bash
 for f in *fas; do prequal $f ; done
 ```
 
@@ -98,7 +105,7 @@ The next step is to infer multiple sequence alignments. Multiple sequence alignm
 
 We will align gene files separately using a for loop:
 
-```
+```bash
 for f in *filtered; do mafft $f > $f.mafft; done
 ```
 
@@ -112,19 +119,19 @@ To trim alignment positions we can use [BMGE](https://bmcevolbiol.biomedcentral.
 
 To remove alignment positions with > 20% gaps:
 
-```
+```bash
 for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.2 -h 1 -w 1 -of $f.gt02; done
 ```
 
 Alternatively, the default settings in BMGE will remove incomplete positions and additionally trim high-entropy (likely fast-evolving) positions:
 
-```
+```bash
 for f in *mafft; do java -jar BMGE.jar -i $f -t AA -of $f.bmge; done
 ```
 
 While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignments in phylip format, which can be easily generated with a simple script:
 
-```
+```bash
 for f in *fa; do fasta2phylip.pl $f > $f.phy; done
 ```
 
@@ -134,7 +141,7 @@ for f in *fa; do fasta2phylip.pl $f > $f.phy; done
 
 To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in a random order). A faster solution is to use our own script. This script will read the files given in STDIN and will output (1) a concatenated alignment to STDOUT and (2) a  file called `partitionfile.part`.
 
-```
+```bash
 perl concat_fasta_partitions.pl *filtered.mafft.gt02 > vert_56g_filtered_g02.fa
 mv partitionfile.part vert_56g_filtered_g02.part
 ```
@@ -150,14 +157,20 @@ One of the most common approaches in phylogenomics is to build gene concatenatio
 
 We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood (ML) analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as s single homogeneous entity. We need to provide the number of threads to use (`-nt 4`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000`):
 
-```
+```bash
 iqtree -s vert_56g_filtered_g02.fa -m TEST -merit BIC -bb 1000 -alrt 1000 -nt 4
 ```
 
 A more sophisticated approach would be to perform a partitioned maximum likelihood analysis, where different genes (or other data partitions) are allowed to have different evolutionary models. This should provide a better fit to the data but will increase the number of parameters too. To lauch this analysis we need to provide a file containing the coordinates of the partitions (`-spp`) and we can ask IQTREE to select the best-fit models for each partition, in this case according to AICc that is more suitable for shorter alignments.
 
-```
+```bash
 iqtree -s vert_56g_filtered_g02.fa -spp vert_56g_filtered_g02.part -m TEST -merit AICc -bb 1000 -alrt 1000 -nt 4
+```
+
+Alternatively, the heterogeneity of evolutionary patterns among alignment sites can be accounted for with a site-heterogeneous model, such as the C60 model coupled with the previously-selected best-fit model JTT:
+
+```bash
+iqtree -s vert_56g_filtered_g02.fa -m JTT+G+C60 -bb 1000 -alrt 1000 -nt 4
 ```
 
 Congratulations!! If everything went well, you should get your maximum likelihood estimation of the vertebrate phylogeny (.treefile)! See below how to see a graphical representation of your tree.
@@ -173,19 +186,19 @@ We will use [ASTRAL](https://github.com/smirarab/ASTRAL), a widely used tool tha
 
 Before running ASTRAL, we will need to estimate individual gene trees. This can be easily done with a loop calling IQTREE:
 
-```
+```bash
 for f in *filtered.mafft.gt02; do iqtree -s $f -m TEST -merit AICc -nt 1; done
 ```
 
 After all gene trees are inferred, we should put them all into a single file:
 
-```
+```bash
 cat *filtered.mafft.gt02.treefile > my_gene_trees.tre
 ```
 
 Now running ASTRAL is trivial, providing the input file with the gene trees and the desired output file name:
 
-```
+```bash
 java -jar astral.5.6.3.jar -i my_gene_trees.tre -o species_tree_ASTRAL.tre 2> out.log
 ```
 
