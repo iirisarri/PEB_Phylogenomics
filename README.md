@@ -171,7 +171,7 @@ cat *filtered.mafft.g08.treefile > my_gene_trees.tre
 
 Now running ASTRAL is trivial, providing the input file with the gene trees and the desired output file name:
 
-```bash
+```
 java -jar astral.5.6.3.jar -i my_gene_trees.tre -o species_tree_ASTRAL.tre 2> out.log
 ```
 
