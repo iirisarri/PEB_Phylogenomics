@@ -47,7 +47,7 @@ Let's make taxon names homogeneous across ortholog groups; this is necessary for
   <summary>Need help?</summary>
   
 ```
-for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
+for f in *.fa; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
 ```
 </details>
 
@@ -98,14 +98,14 @@ for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.8 -h 1 -w 1 -of $f.g08; 
 
 Alternatively, the default settings in BMGE will remove incomplete positions and additionally trim high-entropy (likely fast-evolving) positions:
 
-```bash
+```
 for f in *mafft; do java -jar BMGE.jar -i $f -t AA -of $f.bmge; done
 ```
 
 While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignments in phylip format, which can be easily generated with a simple script:
 
-```bash
-for f in *fa; do fasta2phylip.pl $f > $f.phy; done
+```
+for f in *.g08; do fasta2phylip.pl $f > $f.phy; done
 ```
 
 
@@ -114,9 +114,9 @@ for f in *fa; do fasta2phylip.pl $f > $f.phy; done
 
 To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in a random order). A faster solution is to use our own script. This script will read the files given in STDIN and will output (1) a concatenated alignment to STDOUT and (2) a  file called `partitionfile.part`.
 
-```bash
-perl concat_fasta_partitions.pl *filtered.mafft.gt02 > vert_56g_filtered_g02.fa
-mv partitionfile.part vert_56g_filtered_g02.part
+```
+perl concat_fasta_partitions.pl *filtered.mafft.g08 > vert_56g_filtered_g08.fa
+mv partitionfile.part vert_56g_filtered_g08.part
 ```
 
 Yeah!! Our concatenated dataset is ready to rock!!
@@ -131,19 +131,19 @@ One of the most common approaches in phylogenomics is to build gene concatenatio
 We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood (ML) analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as s single homogeneous entity. We need to provide the number of threads to use (`-nt 4`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000`):
 
 ```bash
-iqtree -s vert_56g_filtered_g02.fa -m TEST -merit BIC -bb 1000 -alrt 1000 -nt 4
+iqtree -s vert_56g_filtered_g08.fa -m TEST -merit BIC -bb 1000 -alrt 1000 -nt 4
 ```
 
 A more sophisticated approach would be to perform a partitioned maximum likelihood analysis, where different genes (or other data partitions) are allowed to have different evolutionary models. This should provide a better fit to the data but will increase the number of parameters too. To lauch this analysis we need to provide a file containing the coordinates of the partitions (`-spp`) and we can ask IQTREE to select the best-fit models for each partition, in this case according to AICc that is more suitable for shorter alignments.
 
 ```bash
-iqtree -s vert_56g_filtered_g02.fa -spp vert_56g_filtered_g02.part -m TEST -merit AICc -bb 1000 -alrt 1000 -nt 4
+iqtree -s vert_56g_filtered_g08.fa -spp vert_56g_filtered_g02.part -m TEST -merit AICc -bb 1000 -alrt 1000 -nt 4
 ```
 
 Alternatively, the heterogeneity of evolutionary patterns among alignment sites can be accounted for with a site-heterogeneous model, such as the C60 model coupled with the previously-selected best-fit model JTT:
 
 ```bash
-iqtree -s vert_56g_filtered_g02.fa -m JTT+G+C60 -bb 1000 -alrt 1000 -nt 4
+iqtree -s vert_56g_filtered_g08.fa -m JTT+G+C60 -bb 1000 -alrt 1000 -nt 4
 ```
 
 Congratulations!! If everything went well, you should get your maximum likelihood estimation of the vertebrate phylogeny (.treefile)! See below how to see a graphical representation of your tree.
@@ -160,13 +160,13 @@ We will use [ASTRAL](https://github.com/smirarab/ASTRAL), a widely used tool tha
 Before running ASTRAL, we will need to estimate individual gene trees. This can be easily done with a loop calling IQTREE:
 
 ```bash
-for f in *filtered.mafft.gt02; do iqtree -s $f -m TEST -merit AICc -nt 1; done
+for f in *filtered.mafft.g08; do iqtree -s $f -m TEST -merit AICc -nt 1; done
 ```
 
 After all gene trees are inferred, we should put them all into a single file:
 
 ```bash
-cat *filtered.mafft.gt02.treefile > my_gene_trees.tre
+cat *filtered.mafft.g08.treefile > my_gene_trees.tre
 ```
 
 Now running ASTRAL is trivial, providing the input file with the gene trees and the desired output file name:
