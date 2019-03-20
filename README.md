@@ -63,8 +63,8 @@ Often, transcriptomes and genomes have stretches of erroneous, non-homologous am
 
 We will use [PREQUAL](https://doi.org/10.1093/bioinformatics/bty448), a new software takes sets of (homologous) unaligned sequences and identifies sequence stretches sharing no evidence of homology, which are then masked in the output. Note that homology can be invoked at the level of sequences as well as of residues (amino acids or nucleotides). Running PREQUAL for each set orthogroup is  easy:
 
-```bash
-for f in *fas; do prequal $f ; done
+```
+for f in *fa; do prequal $f ; done
 ```
 
 The filtered (masked) alignments are in .filtered whereas .prequal contains relevant information such as the number of residues filtered.
@@ -78,7 +78,7 @@ The next step is to infer multiple sequence alignments. Multiple sequence alignm
 
 We will align gene files separately using a for loop:
 
-```bash
+```
 for f in *filtered; do mafft $f > $f.mafft; done
 ```
 
@@ -90,10 +90,10 @@ Some gene regions (e.g., fast-evolving) are difficult to align and thus position
 
 To trim alignment positions we can use [BMGE](https://bmcevolbiol.biomedcentral.com/articles/10.1186/1471-2148-10-210) but several other software are also available.
 
-To remove alignment positions with > 20% gaps:
+To remove alignment positions with > 80% gaps:
 
-```bash
-for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.2 -h 1 -w 1 -of $f.gt02; done
+```
+for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.8 -h 1 -w 1 -of $f.g08; done
 ```
 
 Alternatively, the default settings in BMGE will remove incomplete positions and additionally trim high-entropy (likely fast-evolving) positions:
