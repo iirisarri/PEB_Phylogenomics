@@ -19,7 +19,7 @@ Let's start by downloading the data from [this respository](https://github.com/i
 <details>
   <summary>Need help?</summary>
   
-```bash
+```
 wget https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz
 tar zxvf vertebrate_proteomes.tar.gz
 ```
@@ -33,51 +33,24 @@ You will see 23 fasta files in total, each containing a set of proteins from a d
 ## Inferring ortholog groups
 
 
-The first step is to identify orthologs among all the proteins. We will use [OrthoFinder](https://github.com/davidemms/OrthoFinder) for this task, which is simple to run. Just provide the folder containing the proteome files:
+The first step is to identify orthologs among all the proteins. We will use [OrthoFinder](https://github.com/davidemms/OrthoFinder) for this task, which is simple to run. Just provide the folder containing the proteome files and tell the software to stop after inferring orthogroups and writing out sequence files for each orthogroup:
 
-```bash
-orthofinder -f vertebrate_proteomes
+```
+orthofinder -os -M msa -f vertebrate_proteomes
 ```
 
-The list of single-copy orthologs will be in a file called Orthogroups.csv. If you look into this file, you will see that it is a list of sequence names, grouped by orthogroups. The next step is to create fasta files that will contain orthologous sequences for every species. This can be automated with [mirlo](https://github.com/mthon/mirlo), which requires [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthologues_XXXXX/Sequences`. Each file corresonds to one orthogroup ("gene"), containing one sequence per species.
 
-```bash
-mirlo.py -c Results_Feb28/Orthogroups.csv -i vertebrate_proteomes -o MIRLO_OUT
-```
-
-Alternatively, one could have a bit of fun and try to parse OrthoFinder's output with a bit of bash. Look at Orthogroups.csv: it is a simple tab-separated file! What do you need to do? Tip: for each orthogroup, get the sequence names (fasta headers) and place them into individual files, one per line. Then use these files to extract the sequences from the original proteomes using [seqtk](https://github.com/lh3/seqtk) or a perl oneliner.
+Let's make taxon names homogeneous across ortholog groups; this is necessary for the concatenation step. You will see that the difference between headers is just a gene number, which we must remove.
 
 <details>
   <summary>Need help?</summary>
   
-```bash
-# each line contains the sequences belonging to one orthogroup
-split -l 1 Orthofinder_Results_Feb28/Orthogroups.csv
-
-# except for the first line, which contains the column headers and can be ignored
-rm xaa 
-
-# you can create files .taxa containing the sequences for each orthgroup
-for f in x*; do name=`cat $f | cut -f1` ; tr '\t' '\n' < $f | tail -n+2 > $name.taxa; done 
-
-# create a file containing all proteins from all species
-cat vertebrate_proteomes/\*.faa > vertebrate_proteomes_all.fasta
-
-# for each orthogroup, extract the sequences from the big fasta file using seqtk
-for f in OG00000\*.taxa; do /Applications/Phylogeny/seqtk/seqtk subseq vertebrate_proteomes.fasta $f > $f.fas; done
-
-# aternatively, use a perl oneliner
-for f in OG00000\*taxa; do perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' $f vertebrate_proteomes.fasta; done
+```
+for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
 ```
 </details>
 
-As a result, we will have one file per orthogroup ("gene"), containing one sequence per species.
-
-Let's make taxon names homogeneous across ortholog groups; this is necessary for the concatenation step. You will see that the difference between headers is just a gene number, which we must remove.
-
-```bash
-for f in *taxa.fas; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
-```
 
 **NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! [Research has shown](https://www.nature.com/articles/s41559-017-0126) that including paralogs into a phylogenomic dataset can bias the results, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference, but identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
 
