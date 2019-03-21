@@ -41,13 +41,13 @@ orthofinder -os -M msa -f vertebrate_proteomes
 
 The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthologues_XXXXX/Sequences`. Each file corresonds to one orthogroup ("gene"), containing one sequence per species.
 
-Let's make taxon names homogeneous across ortholog groups; this is necessary for the concatenation step. You will see that the difference between headers is just a gene number, which we must remove.
+Let's fix sequence names to get tidy files and trees! Also, having homogeneous names across ortholog groups is necessary for the concatenation step. You can see that headers have the following format: `SourceFile_Genus_species_GENE_XXXX`. Can you simplify this to e.g. `Genus_species` format?
 
 <details>
   <summary>Need help?</summary>
   
 ```
-for f in *.fa; do sed -e '/>/ s/_GENE_.*//g' $f > out; mv out $f ; done
+for f in *.fa; do awk -F"_" '/>/ {print $1"_"$NF};!/>/ {print $0}' $f > out; mv out $f ; done
 ```
 </details>
 
