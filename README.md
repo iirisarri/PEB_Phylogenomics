@@ -160,7 +160,7 @@ We will use [ASTRAL](https://github.com/smirarab/ASTRAL), a widely used tool tha
 Thus, before running ASTRAL, we will need to estimate individual gene trees. This can be easily done calling IQTREE in a for loop:
 
 ```
-for f in *filtered.mafft.g08.fas; do iqtree -s $f -m TEST -merit AICc -nt 1; done
+for f in *filtered.mafft.g08.fas; do iqtree -s $f -m TEST -msub nuclear -merit AICc -nt 1; done
 ```
 
 After all gene trees are inferred, we should put them all into a single file:
