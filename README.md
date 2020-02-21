@@ -1,4 +1,4 @@
-# PEB_Phylogenomics
+# EVOP_Phylogenomics
 
 
 This hands-on course will introduce you to the awesomeness of phylogenomics.
@@ -39,20 +39,31 @@ The first step is to identify orthologs among all the proteins. We will use [Ort
 orthofinder -os -M msa -f vertebrate_proteomes
 ```
 
-The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthologues_XXXXX/Sequences`. Each file corresponds to one orthogroup ("gene"), containing one sequence per species.
-
-Let's fix sequence names to get tidy files and trees! Also, having homogeneous names across ortholog groups is necessary for the concatenation step. You can see that headers have the following format: `SourceFile_Genus_species_GENE_XXXX`. Can you simplify this to e.g. `Genus_species` format?
+The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthologues_XXXXX/Sequences`. Each file corresponds to one orthogroup ("gene"), containing one sequence per species. Check that!
 
 <details>
   <summary>Need help?</summary>
   
 ```
-for f in *.fa; do awk -F"_" '/>/ {print $1"_"$NF};!/>/ {print $0}' $f > out; mv out $f ; done
+e.g. less -S OG0000006.fa
 ```
 </details>
 
 
-**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! [Research has shown](https://www.nature.com/articles/s41559-017-0126) that including paralogs into a phylogenomic dataset can bias the results, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference, but identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
+Let's fix sequence names to get tidy files and trees! Also, having homogeneous names across ortholog groups is ESSENTIAL for the concatenation step. You can see that headers have the following format: `SourceFile_Genus_species_GENE_XXXX`. Can you simplify thses with some `bash` commands so that only the common part is retained (i.e. `SourceFile_Genus_species`)?
+
+<details>
+  <summary>Need help?</summary>
+  
+```
+for f in *fa; do sed '/>/ s/_GENE.*//g' $f> out; mv out $f; done
+```
+</details>
+
+Don't forget to check the output: is your command doing what you want?
+
+
+**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! Research has shown (e.g.[here](https://www.nature.com/articles/s41559-017-0126) or [here](https://academic.oup.com/mbe/article/36/6/1344/5418531)) that including paralogs can bias the phylogenetic relationship and molecular clock estimates, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference. But identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
 
 
 
@@ -93,33 +104,28 @@ To trim alignment positions we can use [BMGE](https://bmcevolbiol.biomedcentral.
 To remove alignment positions with > 80% gaps:
 
 ```
-for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.8 -h 1 -w 1 -of $f.g08; done
+for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.8 -h 1 -w 1 -of $f.g08.fas; done
 ```
 
 Alternatively, the default settings in BMGE will remove incomplete positions and additionally trim high-entropy (likely fast-evolving) positions:
 
 ```
-for f in *mafft; do java -jar BMGE.jar -i $f -t AA -of $f.bmge; done
+for f in *mafft; do java -jar BMGE.jar -i $f -t AA -of $f.bmge.fas; done
 ```
 
-While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`). In this case it is more useful to have alignments in phylip format, which can be easily generated with a simple script:
-
-```
-for f in *.g08; do fasta2phylip.pl $f > $f.phy; done
-```
+While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`).
 
 
 ## Concatenate alignment
 
 
-To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in random order). A faster solution is to use our own script. The provided `concat_fasta_partitions.pl` Perl script will read the files given in STDIN and will output (1) a concatenated alignment to STDOUT and (2) a  file called `partitionfile.part` containing the coordinates of the gene alignments.
+To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in random order).
 
 ```
-perl concat_fasta_partitions.pl *filtered.mafft.g08 > vert_56g_filtered_g08.fa
-mv partitionfile.part vert_56g_filtered_g08.part
+FASconCAT-G_v1.02.pl -l -s
 ```
 
-Yeah!! Our concatenated dataset is ready to rock!!
+Is your concatenated file what you expected? It should contain 23 taxa and 21 genes. You might check the concatenation (`FcC_supermatrix.fas`) and the file containing the coordinates for gene boundaries (`FcC_supermatrix_partition.txt`). Looking good? Then your concatenated dataset is ready to rock!!
 
 
 
@@ -128,22 +134,16 @@ Yeah!! Our concatenated dataset is ready to rock!!
 
 One of the most common approaches in phylogenomics is gene concatenation: the signal from multiple genes is "pooled" together with the aim of increasing resolution power. This method is best when among-gene discordance is low.
 
-We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as a single homogeneous entity. We need to provide the number of threads to use (`-nt 4`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000`):
+We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as a single homogeneous entity. We need to provide the number of threads to use (`-nt 2`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC -msub nuclear`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000 -bnni`):
 
 ```
-iqtree-omp -s vert_56g_filtered_g08.fa -m TEST -merit BIC -bb 1000 -alrt 1000 -nt 4 -pre unpartitioned
+iqtree -s FcC_supermatrix.fas -m TEST -msub nuclear -bb 1000 -alrt 1000 -nt 2 -bnni -pre unpartitioned &
 ```
 
 A more sophisticated approach would be to perform a partitioned maximum likelihood analysis, where different genes (or other data partitions) are allowed to have different evolutionary models. This should provide a better fit to the data but will increase the number of parameters too. To launch this analysis we need to provide a file containing the coordinates of the partitions (`-spp`) and we can ask IQTREE to select the best-fit models for each partition, in this case according to AICc (more suitable for shorter alignments).
 
 ```
-iqtree-omp -s vert_56g_filtered_g08.fa -spp vert_56g_filtered_g08.part -m TEST -merit AICc -bb 1000 -alrt 1000 -nt 4 -pre partitioned
-```
-
-Alternatively, the heterogeneity of evolutionary patterns among alignment sites can be accounted for with a site-heterogeneous model, such as the C60 model coupled with the previously-selected best-fit model JTT:
-
-```
-iqtree-omp -s vert_56g_filtered_g08.fa -m JTT+G+C60 -bb 1000 -alrt 1000 -nt 4 -pre mixture_model
+iqtree -s FcC_supermatrix.fas -spp FcC_supermatrix_partition.txt -m TEST -msub nuclear -merit AICc -bb 1000 -alrt 1000 -nt 2 -bnni -pre partitioned
 ```
 
 Congratulations!! If everything went well, you should get your maximum likelihood estimation of the vertebrate phylogeny (`.treefile`)! Looking into the file you will see a tree in parenthetical (newick) format. See below how to create a graphical representation of your tree.
@@ -160,7 +160,7 @@ We will use [ASTRAL](https://github.com/smirarab/ASTRAL), a widely used tool tha
 Thus, before running ASTRAL, we will need to estimate individual gene trees. This can be easily done calling IQTREE in a for loop:
 
 ```
-for f in *filtered.mafft.g08; do iqtree -s $f -m TEST -merit AICc -nt 1; done
+for f in *filtered.mafft.g08.fas; do iqtree -s $f -m TEST -merit AICc -nt 1; done
 ```
 
 After all gene trees are inferred, we should put them all into a single file:
