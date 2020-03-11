@@ -58,14 +58,17 @@ Let's fix sequence names to get tidy files and trees! Also, having homogeneous n
 ```
 for f in *fa; do awk -F"_" '/>/ {print ">"$2"_"$(NF-2)}; !/>/ {print $0}' $f> out; mv out $f; done
 
-# Explanation: loop through the files, modify the input file and save it to "out", overwrite the input with it. Awk: using the "_" field separator, modify lines starting with ">" (sequence names) so that they will only contain the second and second last elements separated by an underscore (>Genus_species). Print all other lines not starting with ">" (i.e. sequences) without modification.
+# Explanation: loop through the files, modify the input file and save it to "out", overwrite the input with it. 
+# Awk: using the "_" field separator, modify lines starting with ">" (sequence names) so that they will only 
+# contain the second and second last elements separated by an underscore (>Genus_species).
+# Print all other lines not starting with ">" (i.e. sequences) without modification.
 ```
 </details>
 
 Don't forget to check the output: is your command doing what you want?
 
 
-**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! Research has shown (e.g.[here](https://www.nature.com/articles/s41559-017-0126) or [here](https://academic.oup.com/mbe/article/36/6/1344/5418531)) that including paralogs can bias the phylogenetic relationship and molecular clock estimates, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference. But identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
+**NOTE ABOUT ORTHOLOGY**: Ensuring orthology is a difficult issue and often using a tool like Orthofinder might not be enough. Paralogy is tricky business! Research has shown (e.g. [here](https://www.nature.com/articles/s41559-017-0126) or [here](https://academic.oup.com/mbe/article/36/6/1344/5418531)) that including paralogs can bias the phylogenetic relationship and molecular clock estimates, particularly when phylogenetic signal is weak. Paralogs should always be removed prior to phylogenetic inference. But identifying them can be difficult and time consuming. One could build single-gene trees and look for sequences producing extremely long branches or clustering outside of the remaining sequences.
 
 
 
@@ -136,7 +139,7 @@ Is your concatenated file what you expected? It should contain 23 taxa and 21 ge
 
 One of the most common approaches in phylogenomics is gene concatenation: the signal from multiple genes is "pooled" together with the aim of increasing resolution power. This method is best when among-gene discordance is low.
 
-We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as a single homogeneous entity. We need to provide the number of threads to use (`-nt 2`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC -msub nuclear`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000 -bnni`):
+We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as a single homogeneous entity. We need to provide the number of threads to use (`-nt 1`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC -msub nuclear`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000 -bnni`):
 
 ```
 iqtree -s FcC_supermatrix.fas -m TEST -msub nuclear -bb 1000 -alrt 1000 -nt 1 -bnni -pre unpartitioned &
