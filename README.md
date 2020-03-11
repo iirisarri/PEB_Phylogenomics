@@ -12,16 +12,16 @@ The phylogenomics pipeline can become very complex, many additional steps might 
 ## Objective and data
 
 
-We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/65/6/1057/2281640). The starting point is a subset of proteins obtained from genomes/transcriptomes of 23 species of vertebrates and our aim is to reconstruct the phylogeny of these species using concatenated and coalescent approaches. In practice, we are using a subset of the full genomes/transcriptomes of these species, only to speed up computations.
+We will use a dataset [from this paper](https://academic.oup.com/sysbio/article/65/6/1057/2281640). The starting point is a subset of proteins obtained from genomes/transcriptomes for 23 species of vertebrates. Our aim is to reconstruct the phylogeny of these species using concatenated and coalescent approaches. In practice, we are using a small subset of the full genomes/transcriptomes of these species, only to speed up computations.
 
-Let's start by downloading the data from [this respository](https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz) and decompress it into your preferred location. 
+Let's start by cloning this repository. The data can be found in the `vertebrate_proteomes` folder.
 
 <details>
   <summary>Need help?</summary>
   
 ```
-wget https://github.com/iirisarri/PEB_Phylogenomics/blob/master/vertebrate_proteomes.tar.gz
-tar zxvf vertebrate_proteomes.tar.gz
+git clone https://github.com/iirisarri/PEB_Phylogenomics.git
+
 ```
 </details>
 
