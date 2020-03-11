@@ -50,13 +50,15 @@ e.g. less -S OG0000006.fa
 </details>
 
 
-Let's fix sequence names to get tidy files and trees! Also, having homogeneous names across ortholog groups is ESSENTIAL for the concatenation step. You can see that headers have the following format: `SourceFile_Genus_species_GENE_XXXX`. Can you simplify thses with some `bash` commands so that only the common part is retained (i.e. `SourceFile_Genus_species`)?
+Let's fix sequence names to get tidy files and trees! Also, having homogeneous names across ortholog groups is ESSENTIAL for the concatenation step. You can see that headers have the following format: `SourceFile_Genus_species_GENE_XXXX`. Can you simplify thses with some `bash` commands so that only the common part is retained (i.e. `Genus_species`)?
 
 <details>
   <summary>Need help?</summary>
   
 ```
-for f in *fa; do sed '/>/ s/_GENE.*//g' $f> out; mv out $f; done
+for f in *fa; do awk -F"_" '/>/ {print ">"$2"_"$(NF-2)}; !/>/ {print $0}' $f> out; mv out $f; done
+
+# Explanation: loop through the files, modify the input file and save it to "out", overwrite the input with it. Awk: using the "_" field separator, modify lines starting with ">" (sequence names) so that they will only contain the second and second last elements separated by an underscore (>Genus_species). Print all other lines not starting with ">" (i.e. sequences) without modification.
 ```
 </details>
 
@@ -137,13 +139,13 @@ One of the most common approaches in phylogenomics is gene concatenation: the si
 We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as a single homogeneous entity. We need to provide the number of threads to use (`-nt 2`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC -msub nuclear`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000 -bnni`):
 
 ```
-iqtree -s FcC_supermatrix.fas -m TEST -msub nuclear -bb 1000 -alrt 1000 -nt 2 -bnni -pre unpartitioned &
+iqtree -s FcC_supermatrix.fas -m TEST -msub nuclear -bb 1000 -alrt 1000 -nt 1 -bnni -pre unpartitioned &
 ```
 
 A more sophisticated approach would be to perform a partitioned maximum likelihood analysis, where different genes (or other data partitions) are allowed to have different evolutionary models. This should provide a better fit to the data but will increase the number of parameters too. To launch this analysis we need to provide a file containing the coordinates of the partitions (`-spp`) and we can ask IQTREE to select the best-fit models for each partition, in this case according to AICc (more suitable for shorter alignments).
 
 ```
-iqtree -s FcC_supermatrix.fas -spp FcC_supermatrix_partition.txt -m TEST -msub nuclear -merit AICc -bb 1000 -alrt 1000 -nt 2 -bnni -pre partitioned
+iqtree -s FcC_supermatrix.fas -spp FcC_supermatrix_partition.txt -m TEST -msub nuclear -merit AICc -bb 1000 -alrt 1000 -nt 1 -bnni -pre partitioned
 ```
 
 Congratulations!! If everything went well, you should get your maximum likelihood estimation of the vertebrate phylogeny (`.treefile`)! Looking into the file you will see a tree in parenthetical (newick) format. See below how to create a graphical representation of your tree.
@@ -182,7 +184,7 @@ Congratulations!! You just got your coalescent species tree!! Is it different fr
 ## Tree visualization
 
 
-Trees are just text files representing relationships with parentheses; did you see that already? But it is more practical to plot them as a graph, for which we can use tools such as [iTOL](https://itol.embl.de) or [FigTree](https://github.com/rambaut/figtree/releases).
+Trees are just text files representing relationships with parentheses; did you see that already? But it is more practical to plot them as a graph, for which we can use tools such as [iTOL](https://itol.embl.de), [FigTree](https://github.com/rambaut/figtree/releases), [iroki](https://www.iroki.net/), or R (e.g. [ggtree](https://bioconductor.org/packages/release/bioc/html/ggtree.html), [phytools](http://www.phytools.org/); see provided R code).
 
 Upload your trees to iTOL. Trees need to be rooted with an outgroup. Click in the branch of *Callorhinchus milii* and the select "Tree Structure/Reroot the tree here". Branch support values can be shown under the "Advanced" menu. The tree can be modified in many other ways, and finally, a graphical tree can be exported. Similar options are available in FigTree.
 
