@@ -1,0 +1,272 @@
+IQ-TREE 1.6.12 built Aug 15 2019
+
+Partition file name: FcC_supermatrix_partition.txt
+Input file name: FcC_supermatrix.fas
+Type of analysis: ModelFinder + tree reconstruction + ultrafast bootstrap (1000 replicates)
+Random seed number: 892464
+
+REFERENCES
+----------
+
+To cite ModelFinder please use: 
+
+Subha Kalyaanamoorthy, Bui Quang Minh, Thomas KF Wong, Arndt von Haeseler,
+and Lars S Jermiin (2017) ModelFinder: Fast model selection for
+accurate phylogenetic estimates. Nature Methods, 14:587–589.
+https://doi.org/10.1038/nmeth.4285
+
+To cite IQ-TREE please use:
+
+Lam-Tung Nguyen, Heiko A. Schmidt, Arndt von Haeseler, and Bui Quang Minh
+(2015) IQ-TREE: A fast and effective stochastic algorithm for estimating
+maximum likelihood phylogenies. Mol Biol Evol, 32:268-274.
+https://doi.org/10.1093/molbev/msu300
+
+Since you used ultrafast bootstrap (UFBoot) please also cite: 
+
+Diep Thi Hoang, Olga Chernomor, Arndt von Haeseler, Bui Quang Minh,
+and Le Sy Vinh (2017) UFBoot2: Improving the ultrafast bootstrap
+approximation. Mol Biol Evol, in press.
+https://doi.org/10.1093/molbev/msx281
+
+Since you used partition models please also cite:
+
+Olga Chernomor, Arndt von Haeseler, and Bui Quang Minh (2016)
+Terrace aware data structure for phylogenomic inference from
+supermatrices. Syst Biol, 65:997-1008.
+https://doi.org/10.1093/sysbio/syw037
+
+SEQUENCE ALIGNMENT
+------------------
+
+Input data: 23 taxa with 21 partitions and 9587 total sites (6.24986% missing data)
+
+  ID  Name                             Type	Seq	Site	Unique	Infor	Invar	Const
+   1  OG0000006.fa.filtered.mafft.g08  AA	22	683	578	292	264	264
+   2  OG0000016.fa.filtered.mafft.g08  AA	21	739	472	151	461	461
+   3  OG0000014.fa.filtered.mafft.g08  AA	21	375	183	64	272	272
+   4  OG0000018.fa.filtered.mafft.g08  AA	20	654	347	215	332	332
+   5  OG0000019.fa.filtered.mafft.g08  AA	20	155	97	44	84	84
+   6  OG0000012.fa.filtered.mafft.g08  AA	21	112	59	20	76	76
+   7  OG0000013.fa.filtered.mafft.g08  AA	21	425	288	115	183	183
+   8  OG0000004.fa.filtered.mafft.g08  AA	22	117	90	58	43	43
+   9  OG0000002.fa.filtered.mafft.g08  AA	22	1238	759	409	622	622
+  10  OG0000008.fa.filtered.mafft.g08  AA	22	121	68	25	79	79
+  11  OG0000015.fa.filtered.mafft.g08  AA	21	770	595	311	293	293
+  12  OG0000000.fa.filtered.mafft.g08  AA	23	543	376	191	261	261
+  13  OG0000001.fa.filtered.mafft.g08  AA	23	1236	861	200	544	544
+  14  OG0000010.fa.filtered.mafft.g08  AA	21	841	730	360	238	238
+  15  OG0000009.fa.filtered.mafft.g08  AA	22	229	181	90	110	110
+  16  OG0000011.fa.filtered.mafft.g08  AA	21	371	162	65	251	251
+  17  OG0000007.fa.filtered.mafft.g08  AA	22	101	81	37	34	34
+  18  OG0000017.fa.filtered.mafft.g08  AA	21	180	89	28	135	135
+  19  OG0000005.fa.filtered.mafft.g08  AA	22	323	150	43	232	232
+  20  OG0000020.fa.filtered.mafft.g08  AA	20	271	186	92	137	137
+  21  OG0000003.fa.filtered.mafft.g08  AA	22	103	63	24	59	59
+
+Column meanings:
+  Unique: Number of unique site patterns
+  Infor:  Number of parsimony-informative sites
+  Invar:  Number of invariant sites
+  Const:  Number of constant sites (can be subset of invariant sites)
+
+ModelFinder
+-----------
+
+Best-fit model according to AICc: JTT+G4:OG0000006.fa.filtered.mafft.g08,JTT+G4:OG0000016.fa.filtered.mafft.g08,JTT+I+G4:OG0000014.fa.filtered.mafft.g08,JTT+I+G4:OG0000018.fa.filtered.mafft.g08,LG+G4:OG0000019.fa.filtered.mafft.g08,JTTDCMut+G4:OG0000012.fa.filtered.mafft.g08,JTT+G4:OG0000013.fa.filtered.mafft.g08,JTTDCMut+G4:OG0000004.fa.filtered.mafft.g08,JTT+F+I+G4:OG0000002.fa.filtered.mafft.g08,JTT+I+G4:OG0000008.fa.filtered.mafft.g08,JTT+G4:OG0000015.fa.filtered.mafft.g08,JTT+F+I+G4:OG0000000.fa.filtered.mafft.g08,JTT+F+G4:OG0000001.fa.filtered.mafft.g08,JTT+F+I+G4:OG0000010.fa.filtered.mafft.g08,JTTDCMut+I+G4:OG0000009.fa.filtered.mafft.g08,JTT+I+G4:OG0000011.fa.filtered.mafft.g08,JTT+G4:OG0000007.fa.filtered.mafft.g08,JTT+I:OG0000017.fa.filtered.mafft.g08,JTT+I+G4:OG0000005.fa.filtered.mafft.g08,JTTDCMut+I+G4:OG0000020.fa.filtered.mafft.g08,JTTDCMut+G4:OG0000003.fa.filtered.mafft.g08
+
+List of best-fit models per partition:
+
+  ID  Model             LogL          AIC      w-AIC      AICc     w-AICc       BIC      w-BIC
+   1  JTT+G4           -8143.7005  16291.4010 + 0.0000  16291.4187 + 0.0000  16300.4540 + 0.0000
+   2  JTT+G4           -5539.3728  11082.7457 + 0.0000  11082.7620 + 0.0000  11091.9563 + 0.0000
+   3  JTT+I+G4         -2286.9008   4579.8016 + 0.0000   4579.8663 + 0.0000   4591.5824 + 0.0000
+   4  JTT+I+G4         -6336.3897  12678.7795 + 0.0000  12678.8164 + 0.0000  12692.2288 + 0.0000
+   5  LG+G4            -1470.0273   2944.0547 + 0.0000   2944.1336 + 0.0000   2950.1415 + 0.0000
+   6  JTTDCMut+G4       -763.6152   1531.2304 + 0.0000   1531.3405 + 0.0000   1536.6674 + 0.0000
+   7  JTT+G4           -3904.9594   7813.9188 + 0.0000   7813.9472 + 0.0000   7822.0229 + 0.0000
+   8  JTTDCMut+G4      -1936.4988   3876.9976 + 0.0000   3877.1029 + 0.0000   3882.5219 + 0.0000
+   9  JTT+F+I+G4      -12134.0744  24312.1488 + 0.0000  24312.9817 + 0.0000  24424.8163 + 0.0000
+  10  JTT+I+G4         -1008.2030   2022.4060 + 0.0000   2022.6111 + 0.0000   2030.7934 + 0.0000
+  11  JTT+G4           -8405.8972  16815.7943 + 0.0000  16815.8100 + 0.0000  16825.0871 + 0.0000
+  12  JTT+F+I+G4       -6064.3831  12172.7661 + 0.0000  12174.7123 + 0.0000  12267.3025 + 0.0000
+  13  JTT+F+G4        -11364.3009  22770.6017 + 0.0000  22771.3629 + 0.0000  22878.1141 + 0.0000
+  14  JTT+F+I+G4      -10363.5012  20771.0023 + 0.0000  20772.2395 + 0.0000  20875.1633 + 0.0000
+  15  JTTDCMut+I+G4    -2746.7710   5499.5421 + 0.0000   5499.6487 + 0.0000   5509.8432 + 0.0000
+  16  JTT+I+G4         -2713.7429   5433.4857 + 0.0000   5433.5511 + 0.0000   5445.2343 + 0.0000
+  17  JTT+G4           -1480.6909   2965.3818 + 0.0000   2965.5042 + 0.0000   2970.6120 + 0.0000
+  18  JTT+I            -1133.9099   2271.8198 + 0.0000   2271.8876 + 0.0000   2278.2057 + 0.0000
+  19  JTT+I+G4         -2043.8855   4093.7709 + 0.0000   4093.8462 + 0.0000   4105.1039 + 0.0000
+  20  JTTDCMut+I+G4    -2952.2318   5910.4636 + 0.0000   5910.5535 + 0.0000   5921.2700 + 0.0000
+  21  JTTDCMut+G4       -772.9229   1549.8457 + 0.0000   1549.9657 + 0.0000   1555.1152 + 0.0000
+
+AIC, w-AIC   : Akaike information criterion scores and weights.
+AICc, w-AICc : Corrected AIC scores and weights.
+BIC, w-BIC   : Bayesian information criterion scores and weights.
+
+Plus signs denote the 95% confidence sets.
+Minus signs denote significant exclusion.
+
+SUBSTITUTION PROCESS
+--------------------
+
+Edge-linked-proportional partition model but separate models between partitions
+
+  ID  Model           Speed  Parameters
+   1  JTT+G4         1.5062  JTT+G4{0.675397}
+   2  JTT+G4         0.7500  JTT+G4{0.315805}
+   3  JTT+I+G4       0.3443  JTT+I{0.376254}+G4{0.820571}
+   4  JTT+I+G4       0.8896  JTT+I{0.262199}+G4{1.2626}
+   5  LG+G4          0.9408  LG+G4{0.444124}
+   6  JTTDCMut+G4    0.4300  JTTDCMut+G4{0.433794}
+   7  JTT+G4         0.7986  JTT+G4{1.27405}
+   8  JTTDCMut+G4    1.9322  JTTDCMut+G4{0.527634}
+   9  JTT+F+I+G4     0.9813  JTT+I{0.225985}+G4{0.955494}
+  10  JTT+I+G4       0.7528  JTT+I{0.461337}+G4{0.765872}
+  11  JTT+G4         1.0522  JTT+G4{1.10557}
+  12  JTT+F+I+G4     1.2436  JTT+I{0.217709}+G4{0.777683}
+  13  JTT+F+G4       0.7526  JTT+G4{1.14903}
+  14  JTT+F+I+G4     1.8916  JTT+I{0.111462}+G4{1.81626}
+  15  JTTDCMut+I+G4  1.2854  JTTDCMut+I{0.369193}+G4{1.63337}
+  16  JTT+I+G4       0.5954  JTT+I{0.382827}+G4{0.613354}
+  17  JTT+G4         1.5164  JTT+G4{0.674717}
+  18  JTT+I          0.3410  JTT+I{0.663117}
+  19  JTT+I+G4       0.3521  JTT+I{0.39992}+G4{0.822056}
+  20  JTTDCMut+I+G4  1.2100  JTTDCMut+I{0.294531}+G4{1.10516}
+  21  JTTDCMut+G4    0.4829  JTTDCMut+G4{1.00712}
+
+MAXIMUM LIKELIHOOD TREE
+-----------------------
+
+Log-likelihood of the tree: -93524.0636 (s.e. 805.6255)
+Unconstrained log-likelihood (without tree): -54373.5149
+Number of free parameters (#branches + #model parameters): 170
+Akaike information criterion (AIC) score: 187388.1273
+Corrected Akaike information criterion (AICc) score: 187394.3019
+Bayesian information criterion (BIC) score: 188606.7150
+
+Total tree length (sum of branch lengths): 1.6948
+Sum of internal branch lengths: 0.5628 (33.2107% of tree length)
+
+NOTE: Tree is UNROOTED although outgroup taxon 'chicken_Gallus_gallus' is drawn at root
+Numbers in parentheses are SH-aLRT support (%) / ultrafast bootstrap support (%)
+
++--chicken_Gallus_gallus
+|
+|                          +--human_Homo_sapiens
+|                       +--| (98.8/98)
+|                       |  +---mouse_Mus_musculus
+|                    +--| (85.2/80)
+|                    |  +--dog_Canis_lupus_familiaris
+|                 +--| (100/100)
+|                 |  |  +--armadillo_Dasypus_novemcinctus
+|                 |  +--| (86.9/77)
+|                 |     +--elephant_Loxodonta_africana
+|              +--| (100/100)
+|              |  |  +--kangaroo_Macropus_eugenii
+|              |  +--| (100/100)
+|              |     +--opossum_Monodelphis_domestica
+|           +--| (100/100)
+|           |  +----platypus_Ornithorhynchus_anatinus
+|        +--| (100/100)
+|        |  |          +-------------coelacanth_Latimeria_chalumnae
+|        |  |       +--| (99.9/99)
+|        |  |       |  |             +------gar_Lepisosteus_oculatus
+|        |  |       |  |  +----------| (100/100)
+|        |  |       |  |  |          |                 +---------pufferfish_Takifugu_rubripes
+|        |  |       |  |  |          |         +-------| (100/100)
+|        |  |       |  |  |          |         |       +---tilapia_Oreochromis_niloticus
+|        |  |       |  |  |          +---------| (100/100)
+|        |  |       |  |  |                    +-----------zebrafish_Danio_rerio
+|        |  |       |  +--| (99.4/99)
+|        |  |       |     +--------------------------shark_Callorhinchus_milii
+|        |  |  +----| (100/100)
+|        |  |  |    |                  +---African-lungfish_Protopterus_annectens
+|        |  |  |    |           +------| (100/100)
+|        |  |  |    |           |      +---American-lungfish_Lepidosiren_paradoxa
+|        |  |  |    +-----------| (100/100)
+|        |  |  |                +--------------Australian-lungfish_Neoceratodus_forsteri
+|        |  +--| (100/100)
+|        |     +----------------frog_Silurana_tropicalis
+|     +--| (45/56)
+|     |  +---turtle_Pelodiscus_sinensis
+|  +--| (100/100)
+|  |  +-------lizard_Anolis_carolinensis
++--| (99.9/100)
+|  +--zebrafinch_Taeniopygia_guttata
+|
++----turkey_Meleagris_gallopavo
+
+Tree in newick format:
+
+(chicken_Gallus_gallus:0.0036317720,(((((((((human_Homo_sapiens:0.0097070677,mouse_Mus_musculus:0.0328536648)98.8/98:0.0031630199,dog_Canis_lupus_familiaris:0.0110669107)85.2/80:0.0018244783,(armadillo_Dasypus_novemcinctus:0.0189004923,elephant_Loxodonta_africana:0.0186448925)86.9/77:0.0014371167)100/100:0.0273834663,(kangaroo_Macropus_eugenii:0.0112863711,opossum_Monodelphis_domestica:0.0100758729)100/100:0.0198022982)100/100:0.0107586983,platypus_Ornithorhynchus_anatinus:0.0395677546)100/100:0.0158203839,(((coelacanth_Latimeria_chalumnae:0.1025504449,((gar_Lepisosteus_oculatus:0.0543746805,((pufferfish_Takifugu_rubripes:0.0720722267,tilapia_Oreochromis_niloticus:0.0340304697)100/100:0.0603047473,zebrafish_Danio_rerio:0.0836704555)100/100:0.0727186245)100/100:0.0808336317,shark_Callorhinchus_milii:0.1914568763)99.4/99:0.0133767710)99.9/99:0.0129459964,((African-lungfish_Protopterus_annectens:0.0287588078,American-lungfish_Lepidosiren_paradoxa:0.0282426722)100/100:0.0518360372,Australian-lungfish_Neoceratodus_forsteri:0.1082285204)100/100:0.0879413623)100/100:0.0367924762,frog_Silurana_tropicalis:0.1244689800)100/100:0.0269059391)100/100:0.0119217588,turtle_Pelodiscus_sinensis:0.0290103851)45/56:0.0035781789,lizard_Anolis_carolinensis:0.0607117965)100/100:0.0165950999,zebrafinch_Taeniopygia_guttata:0.0233728211)99.9/100:0.0068994847,turkey_Meleagris_gallopavo:0.0352282126);
+
+CONSENSUS TREE
+--------------
+
+Consensus tree is constructed from 1000bootstrap trees
+Log-likelihood of consensus tree: -93524.063646
+Robinson-Foulds distance between ML tree and consensus tree: 0
+
+Branches with support >0.000000% are kept (extended consensus)
+Branch lengths are optimized by maximum likelihood on original alignment
+Numbers in parentheses are bootstrap supports (%)
+
++--chicken_Gallus_gallus
+|
+|                          +--human_Homo_sapiens
+|                       +--| (98)
+|                       |  +---mouse_Mus_musculus
+|                    +--| (80)
+|                    |  +--dog_Canis_lupus_familiaris
+|                 +--| (100)
+|                 |  |  +--armadillo_Dasypus_novemcinctus
+|                 |  +--| (77)
+|                 |     +--elephant_Loxodonta_africana
+|              +--| (100)
+|              |  |  +--kangaroo_Macropus_eugenii
+|              |  +--| (100)
+|              |     +--opossum_Monodelphis_domestica
+|           +--| (100)
+|           |  +----platypus_Ornithorhynchus_anatinus
+|        +--| (100)
+|        |  |          +-------------coelacanth_Latimeria_chalumnae
+|        |  |       +--| (99)
+|        |  |       |  |             +------gar_Lepisosteus_oculatus
+|        |  |       |  |  +----------| (100)
+|        |  |       |  |  |          |                 +---------pufferfish_Takifugu_rubripes
+|        |  |       |  |  |          |         +-------| (100)
+|        |  |       |  |  |          |         |       +---tilapia_Oreochromis_niloticus
+|        |  |       |  |  |          +---------| (100)
+|        |  |       |  |  |                    +-----------zebrafish_Danio_rerio
+|        |  |       |  +--| (99)
+|        |  |       |     +--------------------------shark_Callorhinchus_milii
+|        |  |  +----| (100)
+|        |  |  |    |                  +---African-lungfish_Protopterus_annectens
+|        |  |  |    |           +------| (100)
+|        |  |  |    |           |      +---American-lungfish_Lepidosiren_paradoxa
+|        |  |  |    +-----------| (100)
+|        |  |  |                +--------------Australian-lungfish_Neoceratodus_forsteri
+|        |  +--| (100)
+|        |     +----------------frog_Silurana_tropicalis
+|     +--| (56)
+|     |  +---turtle_Pelodiscus_sinensis
+|  +--| (100)
+|  |  +-------lizard_Anolis_carolinensis
++--| (100)
+|  +--zebrafinch_Taeniopygia_guttata
+|
++----turkey_Meleagris_gallopavo
+
+
+Consensus tree in newick format: 
+
+(chicken_Gallus_gallus:0.0036318863,(((((((((human_Homo_sapiens:0.0097085103,mouse_Mus_musculus:0.0328539497)98:0.0031630435,dog_Canis_lupus_familiaris:0.0110687136)80:0.0018255674,(armadillo_Dasypus_novemcinctus:0.0189012249,elephant_Loxodonta_africana:0.0186451618)77:0.0014364260)100:0.0273838919,(kangaroo_Macropus_eugenii:0.0112878502,opossum_Monodelphis_domestica:0.0100767012)100:0.0198020402)100:0.0107593315,platypus_Ornithorhynchus_anatinus:0.0395686690)100:0.0158192489,(((coelacanth_Latimeria_chalumnae:0.1025546260,((gar_Lepisosteus_oculatus:0.0543750930,((pufferfish_Takifugu_rubripes:0.0720741977,tilapia_Oreochromis_niloticus:0.0340355389)100:0.0602935659,zebrafish_Danio_rerio:0.0836756990)100:0.0727293061)100:0.0808420458,shark_Callorhinchus_milii:0.1914695282)99:0.0133758867)99:0.0129472973,((African-lungfish_Protopterus_annectens:0.0287594127,American-lungfish_Lepidosiren_paradoxa:0.0282438966)100:0.0518403609,Australian-lungfish_Neoceratodus_forsteri:0.1082327816)100:0.0879389094)100:0.0367919335,frog_Silurana_tropicalis:0.1244722271)100:0.0269071265)100:0.0119227377,turtle_Pelodiscus_sinensis:0.0290109580)56:0.0035773395,lizard_Anolis_carolinensis:0.0607134114)100:0.0165956038,zebrafinch_Taeniopygia_guttata:0.0233724024)100:0.0069007988,turkey_Meleagris_gallopavo:0.0352287998);
+
+TIME STAMP
+----------
+
+Date and time: Fri Feb 21 14:27:51 2020
+Total CPU time used: 2935.192 seconds (0h:48m:55s)
+Total wall-clock time used: 1486.270257 seconds (0h:24m:46s)
+

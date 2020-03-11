@@ -1,0 +1,228 @@
+IQ-TREE multicore version 1.6.12 for Linux 64-bit built Aug 15 2019
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    noisy (AVX2, FMA3, 503 GB RAM)
+Command: /opt/iqtree-1.6.12-Linux/bin/iqtree -s FcC_supermatrix.fas -spp FcC_supermatrix_partition.txt -m TEST -msub nuclear -merit AICc -bb 1000 -alrt 1000 -nt 2 -bnni -pre partitioned
+Seed:    892464 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Fri Feb 21 14:01:25 2020
+Kernel:  AVX+FMA - 2 threads (56 CPU cores detected)
+
+Reading partition model file FcC_supermatrix_partition.txt ...
+Reading alignment file FcC_supermatrix.fas ... Fasta format detected
+Alignment most likely contains protein sequences
+Alignment has 23 sequences with 9587 columns, 6383 distinct patterns
+2834 parsimony-informative, 2043 singleton sites, 4710 constant sites
+                                           Gap/Ambiguity  Composition  p-value
+   1  chicken_Gallus_gallus                        2.18%    passed     99.92%
+   2  human_Homo_sapiens                           1.65%    passed    100.00%
+   3  kangaroo_Macropus_eugenii                   16.78%    passed    100.00%
+   4  lizard_Anolis_carolinensis                   7.29%    passed     99.89%
+   5  coelacanth_Latimeria_chalumnae               7.06%    passed     98.82%
+   6  gar_Lepisosteus_oculatus                     2.44%    passed     96.33%
+   7  shark_Callorhinchus_milii                    5.19%    passed     97.80%
+   8  dog_Canis_lupus_familiaris                   4.08%    passed    100.00%
+   9  frog_Silurana_tropicalis                     8.67%    passed     86.71%
+  10  turkey_Meleagris_gallopavo                  17.67%    passed     41.10%
+  11  armadillo_Dasypus_novemcinctus              13.28%    passed     99.65%
+  12  African-lungfish_Protopterus_annectens      12.79%    passed     99.67%
+  13  zebrafinch_Taeniopygia_guttata              39.09%    failed      0.97%
+  14  mouse_Mus_musculus                           0.13%    passed     99.49%
+  15  Australian-lungfish_Neoceratodus_forsteri   38.26%    failed      0.27%
+  16  pufferfish_Takifugu_rubripes                18.59%    passed     94.13%
+  17  turtle_Pelodiscus_sinensis                   6.40%    passed     99.65%
+  18  tilapia_Oreochromis_niloticus               18.18%    passed     52.05%
+  19  platypus_Ornithorhynchus_anatinus           32.34%    passed     12.49%
+  20  American-lungfish_Lepidosiren_paradoxa      29.39%    passed     71.12%
+  21  zebrafish_Danio_rerio                       39.81%    passed     18.00%
+  22  elephant_Loxodonta_africana                  1.06%    passed    100.00%
+  23  opossum_Monodelphis_domestica                8.78%    passed     99.94%
+****  TOTAL                                       14.40%  2 sequences failed composition chi2 test (p-value<5%; df=19)
+
+Partition file is not in NEXUS format, assuming RAxML-style partition file...
+Subset	Type	Seqs	Sites	Infor	Invar	Model	Name
+1	AA	22	683	292	264	LG	OG0000006.fa.filtered.mafft.g08
+2	AA	21	739	151	461	LG	OG0000016.fa.filtered.mafft.g08
+3	AA	21	375	64	272	LG	OG0000014.fa.filtered.mafft.g08
+4	AA	20	654	215	332	LG	OG0000018.fa.filtered.mafft.g08
+5	AA	20	155	44	84	LG	OG0000019.fa.filtered.mafft.g08
+6	AA	21	112	20	76	LG	OG0000012.fa.filtered.mafft.g08
+7	AA	21	425	115	183	LG	OG0000013.fa.filtered.mafft.g08
+8	AA	22	117	58	43	LG	OG0000004.fa.filtered.mafft.g08
+9	AA	22	1238	409	622	LG	OG0000002.fa.filtered.mafft.g08
+10	AA	22	121	25	79	LG	OG0000008.fa.filtered.mafft.g08
+11	AA	21	770	311	293	LG	OG0000015.fa.filtered.mafft.g08
+12	AA	23	543	191	261	LG	OG0000000.fa.filtered.mafft.g08
+13	AA	23	1236	200	544	LG	OG0000001.fa.filtered.mafft.g08
+14	AA	21	841	360	238	LG	OG0000010.fa.filtered.mafft.g08
+15	AA	22	229	90	110	LG	OG0000009.fa.filtered.mafft.g08
+16	AA	21	371	65	251	LG	OG0000011.fa.filtered.mafft.g08
+17	AA	22	101	37	34	LG	OG0000007.fa.filtered.mafft.g08
+18	AA	21	180	28	135	LG	OG0000017.fa.filtered.mafft.g08
+19	AA	22	323	43	232	LG	OG0000005.fa.filtered.mafft.g08
+20	AA	20	271	92	137	LG	OG0000020.fa.filtered.mafft.g08
+21	AA	22	103	24	59	LG	OG0000003.fa.filtered.mafft.g08
+Degree of missing data: 0.062
+Info: multi-threading strategy over partitions
+
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.034 seconds
+NOTE: ModelFinder requires 117 MB RAM!
+Testing LG+F+G on supermatrix...
+LG+F+G4 / LnL: -94979.919 / df: 63 / AIC: 190085.839 / AICc: 190086.685 / BIC: 190537.433
+Selecting individual models for 21 charsets using AICc...
+ No. Model        Score       Charset
+   1 JTT+F+I+G4   24312.982   OG0000002.fa.filtered.mafft.g08
+   2 JTT+F+G4     22771.363   OG0000001.fa.filtered.mafft.g08
+   3 JTT+F+I+G4   20772.239   OG0000010.fa.filtered.mafft.g08
+   4 JTT+G4       16291.419   OG0000006.fa.filtered.mafft.g08
+   5 JTT+G4       11082.762   OG0000016.fa.filtered.mafft.g08
+   6 JTT+G4       16815.810   OG0000015.fa.filtered.mafft.g08
+   7 JTT+I+G4     12678.816   OG0000018.fa.filtered.mafft.g08
+   8 JTT+F+I+G4   12174.712   OG0000000.fa.filtered.mafft.g08
+   9 JTT+G4       7813.947    OG0000013.fa.filtered.mafft.g08
+  10 JTTDCMut+I+G4 5499.649    OG0000009.fa.filtered.mafft.g08	0h:1m:27s (0h:1m:35s left)
+  11 JTT+I+G4     4579.866    OG0000014.fa.filtered.mafft.g08	0h:1m:29s (0h:1m:21s left)
+  12 JTTDCMut+I+G4 5910.554    OG0000020.fa.filtered.mafft.g08	0h:1m:30s (0h:1m:7s left)
+  13 JTT+I+G4     4093.846    OG0000005.fa.filtered.mafft.g08	0h:1m:32s (0h:0m:57s left)
+  14 JTT+I+G4     5433.551    OG0000011.fa.filtered.mafft.g08	0h:1m:32s (0h:0m:46s left)
+  15 JTTDCMut+G4  3877.103    OG0000004.fa.filtered.mafft.g08	0h:1m:34s (0h:0m:37s left)
+  16 LG+G4        2944.134    OG0000019.fa.filtered.mafft.g08	0h:1m:34s (0h:0m:29s left)
+  17 JTT+I        2271.888    OG0000017.fa.filtered.mafft.g08	0h:1m:36s (0h:0m:22s left)
+  18 JTT+G4       2965.504    OG0000007.fa.filtered.mafft.g08	0h:1m:36s (0h:0m:16s left)
+  19 JTT+I+G4     2022.611    OG0000008.fa.filtered.mafft.g08	0h:1m:38s (0h:0m:10s left)
+  20 JTTDCMut+G4  1549.966    OG0000003.fa.filtered.mafft.g08	0h:1m:38s (0h:0m:4s left)
+  21 JTTDCMut+G4  1531.340    OG0000012.fa.filtered.mafft.g08	0h:1m:39s (0h:0m:0s left)
+Full partition model AICc score: 187478.133 (LnL: -93565.979  df:170)
+Partition information was printed to partitioned.best_scheme.nex
+Partition information in Raxml format was printed to partitioned.best_scheme
+
+All model information printed to partitioned.model.gz
+CPU time for ModelFinder: 143.708 seconds (0h:2m:23s)
+Wall-clock time for ModelFinder: 99.510 seconds (0h:1m:39s)
+Generating 1000 samples for ultrafast bootstrap (seed: 892464)...
+
+NOTE: 116 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -94111.096
+Current log-likelihood at step 1: -93603.512
+Current log-likelihood at step 2: -93567.874
+Current log-likelihood at step 3: -93567.219
+Current log-likelihood at step 4: -93566.860
+Current log-likelihood at step 5: -93566.525
+Current log-likelihood at step 6: -93566.204
+Current log-likelihood at step 7: -93565.900
+Current log-likelihood at step 8: -93565.622
+Current log-likelihood at step 9: -93565.380
+Current log-likelihood at step 10: -93565.180
+Current log-likelihood at step 11: -93565.026
+Current log-likelihood at step 12: -93564.911
+Current log-likelihood at step 13: -93564.829
+Partition-specific rates:  1.508 0.743 0.342 0.890 0.930 0.431 0.798 1.937 0.978 0.756 1.053 1.236 0.756 1.898 1.304 0.592 1.518 0.348 0.363 1.190 0.484
+Parameters optimization took 12 rounds (10.212 sec)
+
+Computing ML distances based on estimated model parameters... 1.920 sec
+Computing BIONJ tree...
+0.001 seconds
+Log-likelihood of BIONJ tree: -93602.974
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 3.369 second
+Computing log-likelihood of 98 initial trees ... 38.011 seconds
+Current best score: -93536.749
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+Initial log-likelihood: -93524.579
+Current log-likelihood at step 1: -93524.329
+Current log-likelihood at step 2: -93524.280
+Parameters optimization took 1 rounds (1.324 sec)
+
+BETTER TREE FOUND at iteration 1: -93524.280
+Iteration 10 / LogL: -93524.281 / Time: 0h:1m:20s
+Iteration 20 / LogL: -93524.349 / Time: 0h:1m:57s
+Finish initializing candidate tree set (1)
+Current best tree score: -93524.280 / CPU time: 105.492
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -93524.397 / Time: 0h:2m:39s (0h:6m:29s left)
+Iteration 40 / LogL: -93524.300 / Time: 0h:3m:20s (0h:5m:14s left)
+Iteration 50 / LogL: -93524.463 / Time: 0h:4m:0s (0h:4m:10s left)
+Iteration 60 / LogL: -93524.566 / Time: 0h:4m:42s (0h:3m:16s left)
+Iteration 70 / LogL: -93527.383 / Time: 0h:5m:23s (0h:2m:25s left)
+Iteration 80 / LogL: -93524.289 / Time: 0h:6m:3s (0h:1m:36s left)
+Iteration 90 / LogL: -93524.285 / Time: 0h:6m:41s (0h:0m:49s left)
+Iteration 100 / LogL: -93524.515 / Time: 0h:7m:16s (0h:0m:4s left)
+Refining ufboot trees with NNI 5 branches...
+100 samples done
+200 samples done
+300 samples done
+400 samples done
+500 samples done
+600 samples done
+700 samples done
+800 samples done
+900 samples done
+1000 samples done
+Total 131 ufboot trees refined
+TREE SEARCH COMPLETED AFTER 102 ITERATIONS / Time: 0h:24m:36s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+Initial log-likelihood: -93524.280
+Current log-likelihood at step 1: -93524.241
+Current log-likelihood at step 2: -93524.208
+Current log-likelihood at step 3: -93524.180
+Current log-likelihood at step 4: -93524.155
+Current log-likelihood at step 5: -93524.133
+Current log-likelihood at step 6: -93524.115
+Current log-likelihood at step 7: -93524.099
+Current log-likelihood at step 8: -93524.086
+Current log-likelihood at step 9: -93524.073
+Current log-likelihood at step 10: -93524.064
+Partition-specific rates:  1.506 0.750 0.344 0.890 0.941 0.430 0.799 1.932 0.981 0.753 1.052 1.244 0.753 1.892 1.285 0.595 1.516 0.341 0.352 1.210 0.483
+Parameters optimization took 9 rounds (6.206 sec)
+
+BEST SCORE FOUND : -93524.064
+
+Testing tree branches by SH-like aLRT with 1000 replicates...
+2.179 sec.
+Creating bootstrap support values...
+Split supports printed to NEXUS file partitioned.splits.nex
+Total tree length: 1.695
+
+Total number of iterations: 102
+CPU time used for tree search: 2893.108 sec (0h:48m:13s)
+Wall-clock time used for tree search: 1463.979 sec (0h:24m:23s)
+Total CPU time used: 2935.192 sec (0h:48m:55s)
+Total wall-clock time used: 1485.184 sec (0h:24m:45s)
+UFBoot trees printed to partitioned.ufboot
+
+Computing bootstrap consensus tree...
+Reading input file partitioned.splits.nex...
+23 taxa and 58 splits.
+Consensus tree written to partitioned.contree
+Reading input trees file partitioned.contree
+Log-likelihood of consensus tree: -93524.064
+
+Analysis results written to: 
+  IQ-TREE report:                partitioned.iqtree
+  Maximum-likelihood tree:       partitioned.treefile
+  Likelihood distances:          partitioned.mldist
+  Best partitioning scheme:      partitioned.best_scheme.nex
+           in RAxML format:      partitioned.best_scheme
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          partitioned.splits.nex
+  Consensus tree:                partitioned.contree
+  UFBoot trees:                  partitioned.ufboot
+  Screen log file:               partitioned.log
+
+Date and Time: Fri Feb 21 14:27:51 2020

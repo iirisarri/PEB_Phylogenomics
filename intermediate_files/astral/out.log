@@ -1,0 +1,78 @@
+
+================== ASTRAL ===================== 
+
+This is ASTRAL version 5.7.3
+Gene trees are treated as unrooted
+21 trees read from my_gene_trees.tre
+All output trees will be *arbitrarily* rooted at African-lungfish_Protopterus_annectens
+
+======== Running the main analysis
+Number of taxa: 23 (23 species)
+Taxa: [African-lungfish_Protopterus_annectens, American-lungfish_Lepidosiren_paradoxa, Australian-lungfish_Neoceratodus_forsteri, armadillo_Dasypus_novemcinctus, dog_Canis_lupus_familiaris, human_Homo_sapiens, mouse_Mus_musculus, elephant_Loxodonta_africana, platypus_Ornithorhynchus_anatinus, kangaroo_Macropus_eugenii, opossum_Monodelphis_domestica, chicken_Gallus_gallus, turkey_Meleagris_gallopavo, zebrafinch_Taeniopygia_guttata, lizard_Anolis_carolinensis, turtle_Pelodiscus_sinensis, frog_Silurana_tropicalis, coelacanth_Latimeria_chalumnae, gar_Lepisosteus_oculatus, pufferfish_Takifugu_rubripes, tilapia_Oreochromis_niloticus, zebrafish_Danio_rerio, shark_Callorhinchus_milii]
+Taxon occupancy: {platypus_Ornithorhynchus_anatinus=17, African-lungfish_Protopterus_annectens=21, kangaroo_Macropus_eugenii=20, Australian-lungfish_Neoceratodus_forsteri=21, lizard_Anolis_carolinensis=20, frog_Silurana_tropicalis=21, dog_Canis_lupus_familiaris=19, chicken_Gallus_gallus=20, armadillo_Dasypus_novemcinctus=18, mouse_Mus_musculus=21, elephant_Loxodonta_africana=21, turkey_Meleagris_gallopavo=20, shark_Callorhinchus_milii=21, zebrafinch_Taeniopygia_guttata=16, zebrafish_Danio_rerio=16, gar_Lepisosteus_oculatus=21, tilapia_Oreochromis_niloticus=17, pufferfish_Takifugu_rubripes=18, coelacanth_Latimeria_chalumnae=21, American-lungfish_Lepidosiren_paradoxa=21, opossum_Monodelphis_domestica=20, human_Homo_sapiens=20, turtle_Pelodiscus_sinensis=20}
+Number of gene trees: 21
+19 trees have missing taxa
+Calculating quartet distance matrix (for completion of X)
+Species tree distances calculated ...
+Will attempt to complete bipartitions from X before adding using a distance matrix.
+Building set of clusters (X) from gene trees 
+------------------------------
+gradient0: 263
+Number of Clusters after addition by distance: 263
+calculating extra bipartitions to be added at level 1 ...
+Adding to X using resolutions of greedy consensus ...
+Limit for sigma of degrees:625
+polytomy size limit : 3
+discarded polytomies:  [3]
+Threshold 0.0:
+Threshold 0.01:
+Threshold 0.02:
+Threshold 0.05:
+Threshold 0.1:
+Threshold 0.2:
+Threshold 0.3333333333333333:
+polytomy of size 3; rounds with additions with at least 5 support: 0; clusters: 265
+max k is :0
+Number of Clusters after addition by greedy: 265
+gradient0 in heuristiic: 265
+partitions formed in 0.193 secs
+Dynamic Programming starting after 0.193 secs
+Using tree-based weight calculation.
+Using polytree-based weight calculation.
+Polytree max score: 138645
+Polytree building time: 0.01 seconds.
+Number of quartet trees in the gene trees: 138645
+Size of largest cluster: 23
+Greedy score: 117236
+estimationFactor: 1.1826145552560647
+Sub-optimal score: 119749
+Total Number of elements weighted: 348
+Normalized score (portion of input quartet trees satisfied before correcting for multiple individuals): 0.8637094738360561
+Optimization score: 119749
+Optimal tree inferred in 0.299 secs.
+(tilapia_Oreochromis_niloticus,(pufferfish_Takifugu_rubripes,(zebrafish_Danio_rerio,(gar_Lepisosteus_oculatus,(shark_Callorhinchus_milii,(coelacanth_Latimeria_chalumnae,((Australian-lungfish_Neoceratodus_forsteri,(African-lungfish_Protopterus_annectens,American-lungfish_Lepidosiren_paradoxa)),(frog_Silurana_tropicalis,((lizard_Anolis_carolinensis,(turtle_Pelodiscus_sinensis,(zebrafinch_Taeniopygia_guttata,(chicken_Gallus_gallus,turkey_Meleagris_gallopavo)))),(platypus_Ornithorhynchus_anatinus,((kangaroo_Macropus_eugenii,opossum_Monodelphis_domestica),(elephant_Loxodonta_africana,(mouse_Mus_musculus,(armadillo_Dasypus_novemcinctus,(dog_Canis_lupus_familiaris,human_Homo_sapiens)))))))))))))));
+Final quartet score is: 119749
+Final normalized quartet score is: 0.8637094738360561
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 14:
+	{chicken_Gallus_gallus, turkey_Meleagris_gallopavo}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 15:
+	{chicken_Gallus_gallus, turkey_Meleagris_gallopavo, zebrafinch_Taeniopygia_guttata}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 19:
+	{chicken_Gallus_gallus, turkey_Meleagris_gallopavo, zebrafinch_Taeniopygia_guttata, turtle_Pelodiscus_sinensis}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 19:
+	{kangaroo_Macropus_eugenii, opossum_Monodelphis_domestica}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 16:
+	{dog_Canis_lupus_familiaris, human_Homo_sapiens}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 17:
+	{armadillo_Dasypus_novemcinctus, dog_Canis_lupus_familiaris, human_Homo_sapiens}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 17:
+	{armadillo_Dasypus_novemcinctus, dog_Canis_lupus_familiaris, human_Homo_sapiens, mouse_Mus_musculus, elephant_Loxodonta_africana, kangaroo_Macropus_eugenii, opossum_Monodelphis_domestica}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 17:
+	{armadillo_Dasypus_novemcinctus, dog_Canis_lupus_familiaris, human_Homo_sapiens, mouse_Mus_musculus, elephant_Loxodonta_africana, platypus_Ornithorhynchus_anatinus, kangaroo_Macropus_eugenii, opossum_Monodelphis_domestica}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 13:
+	{pufferfish_Takifugu_rubripes, tilapia_Oreochromis_niloticus}
+You may want to ignore posterior probabilities and other statistics related to the following branch branch because the effective number of genes impacting it is only 14:
+	{pufferfish_Takifugu_rubripes, tilapia_Oreochromis_niloticus, zebrafish_Danio_rerio}
+(African-lungfish_Protopterus_annectens,(American-lungfish_Lepidosiren_paradoxa,(Australian-lungfish_Neoceratodus_forsteri,((frog_Silurana_tropicalis,((lizard_Anolis_carolinensis,(turtle_Pelodiscus_sinensis,(zebrafinch_Taeniopygia_guttata,(chicken_Gallus_gallus,turkey_Meleagris_gallopavo)1:0.9162907318741549)1:1.6465774593835572)0.75:0.19266902531937913)1:0.6897515915588069,(platypus_Ornithorhynchus_anatinus,((kangaroo_Macropus_eugenii,opossum_Monodelphis_domestica)1:2.525728644308255,(elephant_Loxodonta_africana,(mouse_Mus_musculus,(armadillo_Dasypus_novemcinctus,(dog_Canis_lupus_familiaris,human_Homo_sapiens)0.91:0.3482271480684934)0.57:0.11152203940785345)0.58:0.1629908873449685)1:2.1271527426848804)0.78:0.23500390106337354)1:0.7251348560533428)1:0.9997664540314773)1:1.1451323043030024,(coelacanth_Latimeria_chalumnae,(shark_Callorhinchus_milii,(gar_Lepisosteus_oculatus,(zebrafish_Danio_rerio,(pufferfish_Takifugu_rubripes,tilapia_Oreochromis_niloticus)1:2.2335922215070947)1:1.6094379124341005)1:1.4816045409242156)0.6:0.14394640361729943)0.58:0.12279997008190761)1:1.4328143767547836)1:1.9924301646902058));
+Weight calculation took 0.025580218 secs
+ASTRAL finished in 0.463 secs

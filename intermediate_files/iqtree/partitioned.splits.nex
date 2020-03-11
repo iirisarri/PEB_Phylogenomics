@@ -1,0 +1,96 @@
+#nexus
+
+BEGIN Taxa;
+DIMENSIONS ntax=23;
+TAXLABELS
+[1] 'chicken_Gallus_gallus'
+[2] 'human_Homo_sapiens'
+[3] 'kangaroo_Macropus_eugenii'
+[4] 'lizard_Anolis_carolinensis'
+[5] 'coelacanth_Latimeria_chalumnae'
+[6] 'gar_Lepisosteus_oculatus'
+[7] 'shark_Callorhinchus_milii'
+[8] 'dog_Canis_lupus_familiaris'
+[9] 'frog_Silurana_tropicalis'
+[10] 'turkey_Meleagris_gallopavo'
+[11] 'armadillo_Dasypus_novemcinctus'
+[12] 'African-lungfish_Protopterus_annectens'
+[13] 'zebrafinch_Taeniopygia_guttata'
+[14] 'mouse_Mus_musculus'
+[15] 'Australian-lungfish_Neoceratodus_forsteri'
+[16] 'pufferfish_Takifugu_rubripes'
+[17] 'turtle_Pelodiscus_sinensis'
+[18] 'tilapia_Oreochromis_niloticus'
+[19] 'American-lungfish_Lepidosiren_paradoxa'
+[20] 'zebrafish_Danio_rerio'
+[21] 'elephant_Loxodonta_africana'
+[22] 'opossum_Monodelphis_domestica'
+[23] 'platypus_Ornithorhynchus_anatinus'
+;
+END; [Taxa]
+
+BEGIN Splits;
+DIMENSIONS ntax=23 nsplits=58;
+FORMAT labels=no weights=yes confidences=no intervals=no;
+MATRIX
+	100	 2,
+	100	 14,
+	98	 2 14,
+	100	 8,
+	80	 2 8 14,
+	100	 11,
+	100	 21,
+	77	 11 21,
+	100	 2 8 11 14 21,
+	100	 3,
+	100	 22,
+	100	 3 22,
+	100	 2 3 8 11 14 21 22,
+	100	 23,
+	100	 2 3 8 11 14 21 22 23,
+	100	 5,
+	100	 6,
+	100	 16,
+	100	 18,
+	100	 16 18,
+	100	 20,
+	100	 16 18 20,
+	100	 6 16 18 20,
+	100	 7,
+	99	 6 7 16 18 20,
+	99	 5 6 7 16 18 20,
+	100	 12,
+	100	 19,
+	100	 12 19,
+	100	 15,
+	100	 12 15 19,
+	100	 5 6 7 12 15 16 18 19 20,
+	100	 9,
+	100	 5 6 7 9 12 15 16 18 19 20,
+	100	 1 4 10 13 17,
+	100	 17,
+	56	 1 4 10 13,
+	100	 4,
+	100	 1 10 13,
+	100	 13,
+	100	 1 10,
+	100	 10,
+	100	 1,
+	19	 8 11 21,
+	13	 4 17,
+	17	 2 8 11 14,
+	32	 1 10 13 17,
+	1	 2 8,
+	2	 2 8 11 21,
+	2	 8 21,
+	3	 2 8 14 21,
+	2	 8 11,
+	1	 5 6 16 18 20,
+	0	 6 7 12 15 16 18 19 20,
+	0	 2 14 21,
+	0	 5 12 15 19,
+	0	 8 11 14 21,
+	0	 5 7,
+;
+END; [Splits]
+
