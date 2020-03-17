@@ -39,7 +39,7 @@ The first step is to identify orthologs among all the proteins. We will use [Ort
 orthofinder -os -M msa -S blast -f vertebrate_proteomes
 ```
 
-The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthogroup_Sequences`. Each file corresponds to one orthogroup ("gene"), containing one sequence per species. Check that!
+The list of single-copy orthologs will be in a file called `Orthogroups/Orthogroups.tsv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthogroup_Sequences`. Each file corresponds to one orthogroup ("gene"), containing one sequence per species. Check that!
 
 <details>
   <summary>Need help?</summary>
