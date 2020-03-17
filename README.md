@@ -132,7 +132,7 @@ While diving into phylogenomic pipelines, it is always advisable to check a few 
 To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in random order).
 
 ```
-FASconCAT-G_v1.02.pl -l -s
+perl FASconCAT-G_v1.02.pl -l -s
 ```
 
 Is your concatenated file what you expected? It should contain 23 taxa and 21 genes. You might check the concatenation (`FcC_supermatrix.fas`) and the file containing the coordinates for gene boundaries (`FcC_supermatrix_partition.txt`). Looking good? Then your concatenated dataset is ready to rock!!
@@ -182,7 +182,7 @@ cat *filtered.mafft.g08.treefile > my_gene_trees.tre
 Now running ASTRAL is trivial, providing the input file with the gene trees and the desired output file name:
 
 ```
-java -jar astral.5.6.3.jar -i my_gene_trees.tre -o species_tree_ASTRAL.tre 2> out.log
+java -jar /srv/evop/resources/astral/ASTRAL/Astral/astral.5.7.3.jar -i my_gene_trees.tre -o species_tree_ASTRAL.tre 2> out.log
 ```
 
 Congratulations!! You just got your coalescent species tree!! Is it different from the concatenated maximum likelihood trees? 
