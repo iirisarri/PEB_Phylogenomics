@@ -36,7 +36,7 @@ You will see 23 fasta files in total, each containing a set of proteins from a d
 The first step is to identify orthologs among all the proteins. We will use [OrthoFinder](https://github.com/davidemms/OrthoFinder) for this task, which is simple to run. Just provide the folder containing the proteome files and tell the software to stop after inferring orthogroups and writing out sequence files for each orthogroup:
 
 ```
-orthofinder -os -M msa -f vertebrate_proteomes
+orthofinder -os -M msa -S blast -f vertebrate_proteomes
 ```
 
 The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthologues_XXXXX/Sequences`. Each file corresponds to one orthogroup ("gene"), containing one sequence per species. Check that!
@@ -56,12 +56,17 @@ Let's fix sequence names to get tidy files and trees! Also, having homogeneous n
   <summary>Need help?</summary>
   
 ```
-for f in *fa; do awk -F"_" '/>/ {print ">"$2"_"$(NF-2)}; !/>/ {print $0}' $f> out; mv out $f; done
+for f in *fa; do awk -F"_" '/>/ {print $1"_"$(NF-2)}; !/>/ {print $0}' $f> out; mv out $f; done
 
 # Explanation: loop through the files, modify the input file and save it to "out", overwrite the input with it. 
 # Awk: using the "_" field separator, modify lines starting with ">" (sequence names) so that they will only 
 # contain the second and second last elements separated by an underscore (>Genus_species).
 # Print all other lines not starting with ">" (i.e. sequences) without modification.
+
+# An easier version:
+for f in *fa; do sed -E '/>/ s/_GENE.+//g' $f > out; mv out $f; done
+# Explanation: in headers (lines starting with ">"), remove everything after "_GENE"
+# Can you guess the difference with using awk? Look at Canis_lupus_familiaris
 ```
 </details>
 
