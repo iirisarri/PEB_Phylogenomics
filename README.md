@@ -176,7 +176,7 @@ for f in *filtered.mafft.g08.fas; do iqtree -s $f -m TEST -msub nuclear -merit A
 After all gene trees are inferred, we should put them all into a single file:
 
 ```
-cat *filtered.mafft.g08.treefile > my_gene_trees.tre
+cat *filtered.mafft.g08.fas.treefile > my_gene_trees.tre
 ```
 
 Now running ASTRAL is trivial, providing the input file with the gene trees and the desired output file name:
