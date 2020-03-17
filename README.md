@@ -39,7 +39,7 @@ The first step is to identify orthologs among all the proteins. We will use [Ort
 orthofinder -os -M msa -S blast -f vertebrate_proteomes
 ```
 
-The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthologues_XXXXX/Sequences`. Each file corresponds to one orthogroup ("gene"), containing one sequence per species. Check that!
+The list of single-copy orthologs will be in a file called `Orthogroups.csv`. This file contains lists of sequence names inferred to belong to the same orthogroups. The sequence files of these orthogroups can be found in `Orthogroup_Sequences`. Each file corresponds to one orthogroup ("gene"), containing one sequence per species. Check that!
 
 <details>
   <summary>Need help?</summary>
@@ -50,7 +50,7 @@ e.g. less -S OG0000006.fa
 </details>
 
 
-Let's fix sequence names to get tidy files and trees! Also, having homogeneous names across ortholog groups is ESSENTIAL for the concatenation step. You can see that headers have the following format: `SourceFile_Genus_species_GENE_XXXX`. Can you simplify thses with some `bash` commands so that only the common part is retained (i.e. `Genus_species`)?
+Let's fix sequence names to get tidy files and trees! Also, having homogeneous names across ortholog groups is ESSENTIAL for the concatenation step. You can see that headers have the following format: `Genus_species_GENE_XXXX`. Can you simplify these with some `bash` commands so that only the common part is retained (i.e. `Genus_species`)?
 
 <details>
   <summary>Need help?</summary>
