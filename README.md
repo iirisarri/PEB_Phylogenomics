@@ -114,13 +114,13 @@ To trim alignment positions we can use [BMGE](https://bmcevolbiol.biomedcentral.
 To remove alignment positions with > 80% gaps:
 
 ```
-for f in *mafft; do java -jar BMGE.jar -i $f -t AA -g 0.8 -h 1 -w 1 -of $f.g08.fas; done
+for f in *mafft; do java -jar /software/BMGE.jar -i $f -t AA -g 0.8 -h 1 -w 1 -of $f.g08.fas; done
 ```
 
 Alternatively, the default settings in BMGE will remove incomplete positions and additionally trim high-entropy (likely fast-evolving) positions:
 
 ```
-for f in *mafft; do java -jar BMGE.jar -i $f -t AA -of $f.bmge.fas; done
+for f in *mafft; do java -jar /software/BMGE.jar -i $f -t AA -of $f.bmge.fas; done
 ```
 
 While diving into phylogenomic pipelines, it is always advisable to check a few intermediate results to ensure we are doing what we should be doing. Multiple sequence alignments can be visualized in [SeaView](http://doua.prabi.fr/software/seaview) or [AliView](https://github.com/AliView/AliView). Also, one could have a quick look at alignments using command line tools (`less -S`).
@@ -132,7 +132,7 @@ While diving into phylogenomic pipelines, it is always advisable to check a few 
 To infer our phylogenomic tree we need to concatenate single-gene alignments. This can be done with tools such as [FASconCAT](https://github.com/PatrickKueck/FASconCAT-G), which will read in all `\*.fas` `\*.phy` or `\*.nex` files in the working directory and concatenate them (in random order).
 
 ```
-perl FASconCAT-G_v1.02.pl -l -s
+perl /software/FASconCAT-G_v1.04.pl -l -s
 ```
 
 Is your concatenated file what you expected? It should contain 23 taxa and 21 genes. You might check the concatenation (`FcC_supermatrix.fas`) and the file containing the coordinates for gene boundaries (`FcC_supermatrix_partition.txt`). Looking good? Then your concatenated dataset is ready to rock!!
@@ -147,7 +147,7 @@ One of the most common approaches in phylogenomics is gene concatenation: the si
 We will use [IQTREE](http://www.iqtree.org/), an efficient and accurate software for maximum likelihood analysis. Another great alternative is [RAxML](https://github.com/stamatak/standard-RAxML). The most simple analysis is to treat the concatenated dataset as a single homogeneous entity. We need to provide the number of threads to use (`-nt 1`) input alignment (`-s`), tell IQTREE to select the best-fit evolutionary model with BIC (`-m TEST -merit BIC -msub nuclear`) and ask for branch support measures such as non-parametric bootstrapping and approximate likelihood ratio test (`-bb 1000 -alrt 1000 -bnni`):
 
 ```
-iqtree -s FcC_supermatrix.fas -m TEST -msub nuclear -bb 1000 -alrt 1000 -nt 1 -bnni -pre unpartitioned &
+iqtree -s FcC_supermatrix.fas -m TEST -msub nuclear -bb 1000 -alrt 1000 -nt 1 -bnni -pre unpartitioned
 ```
 
 A more sophisticated approach would be to perform a partitioned maximum likelihood analysis, where different genes (or other data partitions) are allowed to have different evolutionary models. This should provide a better fit to the data but will increase the number of parameters too. To launch this analysis we need to provide a file containing the coordinates of the partitions (`-spp`) and we can ask IQTREE to select the best-fit models for each partition, in this case according to AICc (more suitable for shorter alignments).
